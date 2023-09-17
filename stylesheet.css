@@ -17,15 +17,6 @@
     max-width: 480px;
 }
 
-@media (max-width: 960px) {
-    .container {
-      flex-direction: column;
-    }
-    .outputs{
-        max-width: 360px;
-    }
-}
-
 #answers {
   display: none;
 }
@@ -167,4 +158,16 @@ footer {
   position: fixed;
   bottom: 0;
   margin-bottom: 20px;
+}
+
+@media (max-width: 960px) {
+  .container {
+    flex-direction: column;
+  }
+  .outputs{
+      max-width: 360px;
+  }
+  footer {
+    position: static;
+  }
 }
