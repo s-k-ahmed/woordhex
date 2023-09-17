@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WOORDHEX</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon-heks.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <div class="modal" id="about">
+        <div class="modal-content" id="about-content">
+            <span class="close" onclick="closeModal('about')">&times;</span>
+            <h2>Over Woordhex</h2>
+            <p><b>Woordhex</b> is een Nederlandstalige woordpuzzel, geïnspireerd door de <i>Spelling Bee</i> puzzel van The New York Times. Ik heb dit gemaakt als cadeau voor mijn vriend, met wie ik heel vaak de <i>Spelling Bee</i> heb gespeeld.</p>
+            <p>In de puzzel worden er 7 letters getoond, waarmee je woorden kunt maken. Je moet altijd de centrale letter gebruiken in elk woord. Het doeleinde van de puzzel is om zoveel mogelijk woorden te vinden. In elke puzzel is er ook ten minste één woord met alle 7 letters (waarvoor krijg je bonuspunten).</p>
+            <p>Jouw tegenspeler is de <b>woordheks</b>. Zij is echt een bedrieger: ze gebruikt een woordenlijst met meer dan 20.000 van de meest gebruikte Nederlandse woorden om haar antwoorden te vinden. Als je goed raadt, zou je haar score (altijd 100) misschien kunnen evenaren, of zelfs overtreffen. Na 18 uur kun je haar antwoorden zien, maar daarna kun je geen woorden meer raden voor die puzzel.</p>
+            <p>Geniet ervan!</p>
+            <hr>
+            <p><b>Woordhex</b> is a Dutch language word puzzle inspired by the New York Times's Spelling Bee. I made it as a gift to my boyfriend after we'd spent so much time playing the Spelling Bee together.</p>
+            <p>In the puzzle, you are presented with 7 letters which you can use to make words. You must use the letter in the centre of the hexagonal grid as part of your word. The object of the puzzle is to find as many words as possible. Every puzzle also has at least one word with all 7 letters in it (which you get extra points for finding).</p>
+            <p>Your opponent is the <b>woordheks</b> (<i>word witch</i>). She's a bit of a cheat: she uses a list of over 20,000 commonly used Dutch words to find her answers. With some good guessing, you might be able to match, or even surpass, her score (which is always 100). You won't be able to see her answers until 18:00 each day, and once you do, you won't be able to submit any more guesses for that puzzle.</p>
+            <p>Geniet ervan!</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="inputs">
+            <div class="titles">
+                <h1>WOORDHEX</h1>
+            </div>
+            <input type="text" id="woord-input">
+            <div id="invalid-guess"><br></div>
+            <div class="main">
+                <div class="buttons">
+                    <input type="button" id="letter1" onclick="buttonPress(1)">
+                    <input type="button" id="letter2" onclick="buttonPress(2)">
+                    <input type="button" id="letter3" onclick="buttonPress(3)">
+                    <input type="button" id="letter0" onclick="buttonPress(0)">
+                    <input type="button" id="letter4" onclick="buttonPress(4)">
+                    <input type="button" id="letter5" onclick="buttonPress(5)">
+                    <input type="button" id="letter6" onclick="buttonPress(6)">
+                    <input type="image" id="submit-btn" src="images/arrow-right-to-bracket-solid.svg" alt="Verzenden" onclick="submitWord()">
+                    <input type="image" id="shuffle" src="images/shuffle-solid.svg" alt="Shuffle" onclick="shuffleLetters()">
+                    <input type="image" id="backspace" src="images/delete-left-solid.svg" alt="Backspace" onclick="backspace()">
+                </div>
+            </div>
+        </div>
+
+        <div class="outputs">
+            <p id="antwoord-tel"></p>
+            <p id="test"></p>
+            <p id="wordcount"></p>
+            <p id="output"></p>
+            <br>
+            <div id="answers">
+                <button class="show-answers" id="show-answers" onclick="toggleAnswers()">Antwoorden tonen</button>
+                <p id="antwoorden"></p>
+            </div>
+            <footer>
+                <a href="#" onclick="openModal('about')">Over Woordhex</a>
+            </footer>
+        </div>
+
+        <script type="text/javascript" src="basiswoorden-gekeurd-4letters.js"></script>
+        <script type="text/javascript" src="kortewoordenlijst-gekeurd.js"></script>
+        <script type="text/javascript" src="zevenletters-kort.js"></script>
+        <script type="text/javascript" src="script.js"></script>
+
+    </div>
+
+</body>
+</html>

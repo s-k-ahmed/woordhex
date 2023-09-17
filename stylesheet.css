@@ -1,0 +1,170 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+.inputs {
+    font: 16px Roboto, sans-serif;
+    max-width: 360px;
+    margin: auto;
+}
+
+.outputs {
+    font: 16px Roboto, sans-serif;
+    margin: auto;
+    max-width: 480px;
+}
+
+@media (max-width: 960px) {
+    .container {
+      flex-direction: column;
+    }
+    .outputs{
+        max-width: 360px;
+    }
+}
+
+#answers {
+  display: none;
+}
+
+h1 {
+    font: bold 36px Roboto, sans-serif;
+    text-align: center;
+    margin: 16px;
+}
+
+h2 {
+    font: bold 18px Roboto, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+p {
+  font: 16px Roboto, sans-serif;
+}
+
+input[type=button] {
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font: bold 36px Roboto, sans-serif;
+    transition: color 0.4s;
+}
+
+input[type=text] {
+    border: 1px solid black;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font: bold 36px Roboto, sans-serif;
+    max-width: 300px;
+}
+
+input[type=shuffle] {
+    border: 1px solid black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+}
+
+body {
+    background-color: white;
+}
+
+.main {
+    display:flex;
+    --s: 100px;  /* size  */
+    --m: 4px;    /* margin */
+    --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+}
+  
+  .buttons {
+    font-size: 0; /*disable white space between inline block element */
+    padding: 18px 18px
+  }
+  
+  .buttons input {
+    width: var(--s);
+    margin: var(--m);
+    height: calc(var(--s)*1.1547); 
+    display: inline-block;
+    font-size: 30px;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    background: grey;
+    color: white;
+    margin-bottom: calc(var(--m) - var(--s)*0.2885); 
+  }
+  #letter0 {
+    background: purple;
+  }
+  #submit-btn, #shuffle, #backspace {
+    background: gainsboro;
+  }
+  .buttons::before {
+    content: "";
+    width: calc(var(--s)/2 + var(--m));
+    float: left;
+    height: 100%;
+    shape-outside: repeating-linear-gradient(#000 0 10%, #0000 0 50%, #000 0 10%, #0000 0 50%);
+    /*shape-outside: radial-gradient(#0000 95%, #000 5%);*/
+  }
+
+#antwoorden, #output {
+    column-count: 3;
+}
+
+#invalid-guess {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 20px auto; /* 20px from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 20px;
+}
