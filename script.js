@@ -68,7 +68,8 @@ function getfromStorage(d) {
         return;
     }
     // If the day has changed since the last session...
-    localStorage.removeItem("answers");                     // Removes the cached answers to the previous puzzle
+        // localStorage.removeItem("answers");                  // Removes the cached answers to the previous puzzle
+    localStorage.removeItem("centralIndex");
     scoreHistory.push(JSON.parse(jsonTodayScore));          // Adds the previous day's score to scoreHistory,
     jsonScoreHistory = JSON.stringify(scoreHistory);        // ... then ...
     localStorage.setItem("score-hist", jsonScoreHistory);   // Saves it in local storage
@@ -86,34 +87,45 @@ function selectWord(d) {
     
     // Chooses a required letter from the word 
     // (23rd power gives equal probability for each of the 7 letters)
-    CENTRAALINDEX = (d ** 23) % 7;  
+    CENTRAALINDEX = ((d ** 23) % 7);
     CENTRAALLETTER = WOORDLETTERS[CENTRAALINDEX];
-    
-    // Swaps the central letter index to the front so it can be avoided during shuffling
-    [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
-    
     findSols();
+    // Loops through the central indices until it finds one where the witch's score is 80 or higher
+    let i = 0;
+    while (i < 7 && calculateScore(ANTWOORDEN) < 80) {
+        CENTRAALINDEX = (CENTRAALINDEX + 1) % 7;
+        CENTRAALLETTER = WOORDLETTERS[CENTRAALINDEX];
+        ANTWOORDEN = [];
+        localStorage.removeItem("answers");
+        findSols();
+        i++;
+    }
     GUESSES.forEach(g => printOutput(g));   // Needs to be after findSols() so it can print the %age properly
     updateWordCountScore();
     printText("antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
+    
+    // Swaps the central letter index to the front so it can be avoided during shuffling
+    [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
     shuffleLetters();
     savetoStorage();
 };
 
-// Finds all solutions to today's puzzle and saves them in the array ANTWOORDEN + local storage (only done once per day)
+// Finds all solutions to today's puzzle and saves them in the array ANTWOORDEN
 function findSols() {
-    let jsonAnswers = localStorage.getItem("answers");
-    // Imports answers from cache and escapes if there is cached content
-    // (FYI: cached answers data is removed for new puzzles in getfromStorage())
-    if (jsonAnswers != null) {
-        ANTWOORDEN = JSON.parse(jsonAnswers);
-        return;
-    }
-    // If there is no cached data...
+    /*
+        let jsonAnswers = localStorage.getItem("answers");
+        // Imports answers from cache and escapes if there is cached content
+        // (FYI: cached answers data is removed for new puzzles in getfromStorage())
+        if (jsonAnswers != null) {
+            ANTWOORDEN = JSON.parse(jsonAnswers);
+            return;
+        }
+        // If there is no cached data...
+    */
     BASISWOORDEN.forEach(x => isValidWord(x) === true ? ANTWOORDEN.push(x) : null); // Checks each word in the smaller list to see if it is a valid answer
     ANTWOORDEN.sort();                                              // Sorts them alphabetically
-    jsonAnswers = JSON.stringify(ANTWOORDEN);                       // ... then ...
-    localStorage.setItem("answers", jsonAnswers);                   // Saves the valid answers in local storage
+        //jsonAnswers = JSON.stringify(ANTWOORDEN);                       // ... then ...
+        //localStorage.setItem("answers", jsonAnswers);                   // Saves the valid answers in local storage
 }
 
 // Takes guess, checks if it is valid, then prints it/an error message and saves it to local storage.
