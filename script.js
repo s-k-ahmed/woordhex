@@ -151,7 +151,6 @@ function submitWord() {
         printError("Woord niet herkend");
         return;
     }
-    printError("<br>");     // Preserves the vertical shape of the page
     GUESSES.push(guess);
     printOutput(guess);
     savetoStorage();
