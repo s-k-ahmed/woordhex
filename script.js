@@ -1,7 +1,7 @@
 // Initialises global variables
 let date = new Date();
 let dateUnix = Math.floor((Date.now()-(date.getTimezoneOffset()*1000*60))/(1000*60*60*24)); // Set to change days at midnight in local timezone
-let WOORD;
+let woordhexNumber = dateUnix - 19619;let WOORD;
 let CENTRAALINDEX;
 let CENTRAALLETTER;
 const WOORDLETTERS = [];
@@ -12,6 +12,7 @@ let scoreHistory = [];
 const shuffle = [0, 1, 2, 3, 4, 5, 6];
 let answersShown = false;
 let answersSeen = false;
+let version = "0.9";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -237,6 +238,10 @@ function printOutput(x) {
 // Prints the variable x as an invalid error message
 function printError(x) {
     printText("invalid-guess", "<i>" + x + "</i>");
+    document.getElementById("invalid-guess").style.opacity = 0.8;
+    setTimeout(() => {
+        document.getElementById("invalid-guess").style.opacity = 0;
+    }, 1000)
 }
 
 // Prints/updates the word count and score
@@ -274,7 +279,6 @@ function toggleAnswers() {
 }; 
 
 function shareResult() {
-    let woordhexNumber = dateUnix - 19619;
     let score = calculatePercentage(GUESSES, ANTWOORDEN);
     let scoreGroup = Math.floor(score / 20);
     let yourWords = GUESSES.length;
@@ -287,7 +291,11 @@ function shareResult() {
     let emojiText = scoreEmojis.filter((value, index) => index <= scoreGroup).join("");
     let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + " " + score + "/100\n" + youEmoji + " " + yourWords + " woorden\n" + heksEmoji + " " + heksWords + " woorden\nhttps://s-k-ahmed.github.io/woordhex/";
     navigator.clipboard.writeText(resultText);
-    alert("Resultaat gekopieerd naar klembord");
+    printText("result-shared", "Resultaat gekopieerd naar klembord");
+    document.getElementById("result-shared").style.opacity = 0.8;
+    setTimeout(() => {
+        document.getElementById("result-shared").style.opacity = 0;
+    }, 1000)
 }
 
 // HTML INPUT
@@ -302,6 +310,9 @@ document.getElementById("woord-input").addEventListener("keydown", function(even
         shuffleLetters();
     }
 });
+
+document.getElementById("woordhex-nummer").innerHTML += woordhexNumber;
+document.getElementById("version").innerHTML += version;
 
 // Selects the word input box if the screen is presented horizontally
 function focusInput() {
@@ -328,13 +339,17 @@ function assignLetter(l) {
 
 // Shuffles the shuffle array, excluding the first/central letter, and assigns them to the buttons
 function shuffleLetters(){
+    shuffle.forEach((v, i) => i > 0 ? document.getElementById("letter"+i).style.color = "transparent" : null);
     shuffle.shift();                    // Removes first/central letter
     for (let i = shuffle.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [shuffle[i], shuffle[j]] = [shuffle[j], shuffle[i]];
     }
     shuffle.unshift(CENTRAALINDEX);     // Replaces first/central letter
-    shuffle.forEach((value) => assignLetter(value));
+    setTimeout(() => {
+        shuffle.forEach((value) => assignLetter(value));
+        shuffle.forEach((v, i) => i > 0 ? document.getElementById("letter"+i).style.color = "white" : null);
+    }, 300)
 }
 
 // MODALS

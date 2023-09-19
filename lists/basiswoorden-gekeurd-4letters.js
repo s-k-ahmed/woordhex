@@ -1,3 +1,8 @@
+/*
+	List of all words of 4+ letters without uppercase/special characters from the Opentaal (long) wordlist 
+	See license at licenses/LICENSE-opentaal.txt
+*/
+
 const WOORDEN = [
 	'aagje',
 	'aagt',

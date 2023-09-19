@@ -21,6 +21,11 @@
   display: none;
 }
 
+.pmbuttons {
+  font-size: 16px;
+  position: relative;
+}
+
 h1 {
     font: bold 36px Roboto, sans-serif;
     text-align: center;
@@ -44,7 +49,7 @@ input[type=button] {
     text-decoration: none;
     display: inline-block;
     font: bold 36px Roboto, sans-serif;
-    transition: color 0.4s;
+    transition: color 200ms;
 }
 
 input[type=text] {
@@ -71,7 +76,9 @@ body {
 }
 
 .main {
-    display:flex;
+    position: relative;
+    display: flex;
+    justify-content: center;
     --s: 100px;  /* size  */
     --m: 4px;    /* margin */
     --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
@@ -112,9 +119,21 @@ body {
     column-count: 3;
 }
 
-#invalid-guess {
+
+#invalid-guess, #result-shared {
+  opacity: 0;
+  background-color: #555;
+  color: #fff;
   text-align: center;
-  margin-top: 10px;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  transition: opacity 600ms;
+}
+
+#invalid-guess {
+  top: -55px;
 }
 
 .modal {
@@ -158,6 +177,11 @@ footer {
   position: fixed;
   bottom: 0;
   margin-bottom: 20px;
+}
+
+.footer-span {
+  margin-left: 40px;
+  color: grey;
 }
 
 @media (max-width: 960px) {

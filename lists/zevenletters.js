@@ -1,3 +1,8 @@
+/*
+	List of all words with 7 unique letters from the Opentaal (long) wordlist 
+	See license at licenses/LICENSE-opentaal.txt
+*/
+
 const ZEVENS = [
 	"aaibaarheid",
 	"aalbessensap",

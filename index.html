@@ -45,8 +45,8 @@
                 <h1>WOORDHEX</h1>
             </div>
             <input type="text" id="woord-input">
-            <div id="invalid-guess"><br></div>
             <div class="main">
+                <div id="invalid-guess"><br></div>
                 <div class="buttons">
                     <input type="button" id="letter1" onclick="buttonPress(1)">
                     <input type="button" id="letter2" onclick="buttonPress(2)">
@@ -71,16 +71,19 @@
             <div id="pmdiv">
                 <button class="pmbuttons" id="show-answers" onclick="toggleAnswers()">Antwoorden tonen</button>
                 <button class="pmbuttons" id="share" onclick="shareResult()">Score delen</button>
+                <div id="result-shared"></div>
                 <p id="antwoorden"></p>
             </div>
             <footer>
                 <a href="#" onclick="openModal('about')">Over Woordhex</a>
+                <span class="footer-span" id="woordhex-nummer">#</span>
+                <span class="footer-span" id="version">v</span>
             </footer>
         </div>
 
-        <script type="text/javascript" src="basiswoorden-gekeurd-4letters.js"></script>
-        <script type="text/javascript" src="kortewoordenlijst-gekeurd.js"></script>
-        <script type="text/javascript" src="zevenletters-kort.js"></script>
+        <script type="text/javascript" src="lists/basiswoorden-gekeurd-4letters.js"></script>
+        <script type="text/javascript" src="lists/kortewoordenlijst-gekeurd.js"></script>
+        <script type="text/javascript" src="lists/zevenletters-kort.js"></script>
         <script type="text/javascript" src="script.js"></script>
 
     </div>
