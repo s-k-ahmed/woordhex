@@ -122,7 +122,7 @@ function findSols() {
         }
         // If there is no cached data...
     */
-    BASISWOORDEN.forEach(x => isValidWord(x) === true ? ANTWOORDEN.push(x) : null); // Checks each word in the smaller list to see if it is a valid answer
+    BASISWOORDEN.forEach(x => isValidWord(x, ANTWOORDEN) === true ? ANTWOORDEN.push(x) : null); // Checks each word in the smaller list to see if it is a valid answer
     ANTWOORDEN.sort();                                              // Sorts them alphabetically
         //jsonAnswers = JSON.stringify(ANTWOORDEN);                       // ... then ...
         //localStorage.setItem("answers", jsonAnswers);                   // Saves the valid answers in local storage
@@ -136,8 +136,8 @@ function submitWord() {
         printError("Antwoorden al gezien");
         return;
     }
-    if (isValidWord(guess) != true) {
-        let error = isValidWord(guess);
+    let error = isValidWord(guess, GUESSES);
+    if (error != true) {
         let errorMessage = (
             error == "wrongLetters" ? "Niet toegestaan letter(s)" :
             error == "noCentral" ? "Geen centrale letter" :
@@ -162,12 +162,12 @@ function isWord(w) {
     return WOORDEN.some(x => x === w);
 }
 
-// Checks to see if the input is a valid guess
+// Checks to see if the input w is a valid guess (that isn't already in arr)
 // Returns  TRUE if all conditions are met
 //          "wrongLetters" if the guess has an invalid letter
 //          "noCentral" if the guess does not contain the central letter
-//          "repeat" if the guess has already been made
-function isValidWord(w) {
+//          "repeat" if the guess has already been made in the array arr
+function isValidWord(w, arr) {
     // Does it only contain the letters given in the puzzle? Does it contain the central letter?
     let guessLetters = [];
     alphletters.forEach((value) => w.indexOf(value) != -1 ? guessLetters.push(value) : null);   // Creates array of letters in the guess
@@ -179,8 +179,8 @@ function isValidWord(w) {
     if (hasCentral == false) {
         return "noCentral";
     }
-    // Has this word already been guessed?
-    let newguess = GUESSES.reduce((total, current) => current == w ? total + 1 : total, 0);     // Counts how many times this guess has been made already (incl. this time)
+    // Has this word already been found in the given array?
+    let newguess = arr.reduce((total, current) => current == w ? total + 1 : total, 0);     // Counts how many times this guess has been made already (incl. this time)
     let isNew = (newguess == 0);
     if (isNew == false) {
         return "repeat";
@@ -246,7 +246,7 @@ function updateWordCountScore() {
 }
 
 if (date.getHours() > 17) {
-    document.getElementById("answers").style.display = "inline";
+    document.getElementById("pmdiv").style.display = "inline";
 }
 
 // Toggles the printing of the list of possible answers
@@ -272,6 +272,23 @@ function toggleAnswers() {
     answersSeen = true;
     savetoStorage();
 }; 
+
+function shareResult() {
+    let woordhexNumber = dateUnix - 19619;
+    let score = calculatePercentage(GUESSES, ANTWOORDEN);
+    let scoreGroup = Math.floor(score / 20);
+    let yourWords = GUESSES.length;
+    let heksWords = ANTWOORDEN.length;
+    let youWon = (score > 100);
+    let scoreEmojis = ["✨", "🔮", "🛡", "🏰", "⚔", "🏆"];
+    let youEmoji = "🏇";
+    let heksEmoji = "🧙‍♀️";
+    youWon ? youEmoji += "👑" : heksEmoji += "👑";
+    let emojiText = scoreEmojis.filter((value, index) => index <= scoreGroup).join("");
+    let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + " " + score + "/100\n" + youEmoji + " " + yourWords + " woorden\n" + heksEmoji + " " + heksWords + " woorden\nhttps://s-k-ahmed.github.io/woordhex/";
+    navigator.clipboard.writeText(resultText);
+    alert("Resultaat gekopieerd naar klembord");
+}
 
 // HTML INPUT
 
