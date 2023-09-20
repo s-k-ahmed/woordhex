@@ -3,7 +3,9 @@
 <head>
     <title>WOORDHEX</title>
     <link rel="icon" type="image/x-icon" href="images/favicon-heks.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap">
     <link rel="stylesheet" href="stylesheet.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -13,16 +15,16 @@
         <div class="modal-content" id="about-content">
             <span class="close" onclick="closeModal('about')">&times;</span>
             <h2>Over Woordhex</h2>
-            <p><b>Woordhex</b> is een Nederlandstalige woordpuzzel, geïnspireerd door de <i>Spelling Bee</i> puzzel van The New York Times. Ik heb dit gemaakt als cadeau voor mijn vriend, met wie ik heel vaak de <i>Spelling Bee</i> heb gespeeld.</p>
-            <p>In de puzzel worden er 7 letters getoond, waarmee je woorden kunt maken.</p>
+            <p><b>Woordhex</b> is een Nederlandstalige woordpuzzel, geïnspireerd op de <i>Spelling Bee</i> puzzel van The New York Times. Ik heb dit gemaakt als cadeau voor mijn vriend, met wie ik heel vaak de <i>Spelling Bee</i> heb gespeeld.</p>
+            <p>In de puzzel worden 7 letters getoond, waarmee je woorden kunt maken.</p>
             <ul>
-                <li>Jouw woord moet ten minste 4 letters bevatten.</li>
-                <li>Je mag elke letter meer dan eens gebruiken.</li>
-                <li>Je moet altijd de centrale letter gebruiken in elk woord.</li>
-                <li>Onze woordenlijst bevat geen namen van mensen of plaatsen. Bovendien staan er weinig werkwoordvormen.</li>
+                <li>Elk woord moet ten minste 4 letters bevatten.</li>
+                <li>Je mag elke letter zo vaak je wil gebruiken.</li>
+                <li>Je moet de centrale letter gebruiken in elk woord.</li>
+                <li>De woordenlijst bevat geen namen van mensen of plaatsen; bovendien staan er weinig werkwoordvormen in.</li>
             </ul> 
-            <p> Het doeleinde van de puzzel is om zoveel mogelijk woorden te vinden. In elke puzzel is er ook ten minste één woord met alle 7 letters (waarvoor krijg je bonuspunten).</p>
-            <p>Jouw tegenspeler is de <b>woordheks</b>. Zij is niet vies van vals spelen: ze gebruikt een woordenlijst met meer dan 20.000 van de meest gebruikte Nederlandse woorden om haar antwoorden te vinden. Als je goed raadt, kun je haar score (die altijd 100 is) misschien evenaren, of zelfs overtreffen. Na 18 uur kun je haar antwoorden zien, maar daarna kun je geen woorden meer raden voor die puzzel.</p>
+            <p> Het doeleinde van de puzzel is om zoveel mogelijk woorden te vinden. In elke puzzel is er ook ten minste één woord met alle 7 letters (daarvoor krijg je bonuspunten).</p>
+            <p>Jouw tegenstander is de <b>woordheks</b>. Zij is niet vies van valsspelen: ze gebruikt een woordenlijst met meer dan 20.000 van de meest gebruikte Nederlandse woorden om haar antwoorden te vinden. Als je goed raadt, kun je haar score (die altijd 100 is) misschien evenaren, of zelfs overtreffen. Na 18:00 uur kun je haar antwoorden zien, maar daarna kun je geen woorden meer raden voor de puzzel van die dag.</p>
             <p>Geniet ervan!</p>
             <hr>
             <p><b>Woordhex</b> is a Dutch language word puzzle inspired by the New York Times's Spelling Bee. I made it as a gift to my boyfriend after we'd spent so much time playing the Spelling Bee together.</p>
@@ -31,13 +33,23 @@
                 <li>Your guess must contain at least 4 letters.</li>
                 <li>You can use each letter more than once.</li>
                 <li>You must use the letter in the centre of the hexagonal grid as part of your word.</li>
-                <li>Our wordlist does not include names of people or places. It also does not include many verbal inflections.</li>
+                <li>The wordlist does not include names of people or places. It also does not include many verbal inflections.</li>
             </ul> 
             <p>The object of the puzzle is to find as many words as possible. Every puzzle also has at least one word with all 7 letters in it (which you get extra points for finding).</p>
             <p>Your opponent is the <b>woordheks</b> (<i>word witch</i>). She's a bit of a cheat: she uses a list of over 20,000 commonly used Dutch words to find her answers. With some good guessing, you might be able to match, or even surpass, her score (which is always 100). You won't be able to see her answers until 18:00 each day, and once you do, you won't be able to submit any more guesses for that puzzle.</p>
             <p>Geniet ervan!</p>
         </div>
     </div>
+
+    <!--
+    <div class="modal" id="newday">
+        <div class="modal-content" id="newday-content">
+            <span class="close" onclick="closeModal('newday')">&times;</span>
+            <h1 id="newday-woordhex-nummer">WOORDHEX #</h1>
+            <h2 id="newday-antwoord-tel"></h2>
+        </div>
+    </div>
+    -->
 
     <div class="container">
         <div class="inputs">
@@ -76,8 +88,8 @@
             </div>
             <footer>
                 <a href="#" onclick="openModal('about')">Over Woordhex</a>
-                <span class="footer-span" id="woordhex-nummer">#</span>
-                <span class="footer-span" id="version">v</span>
+                <span class="footer-span" id="footer-woordhex-nummer">#</span>
+                <span class="footer-span" id="footer-version">v</span>
             </footer>
         </div>
 

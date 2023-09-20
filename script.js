@@ -1,7 +1,8 @@
 // Initialises global variables
 let date = new Date();
 let dateUnix = Math.floor((Date.now()-(date.getTimezoneOffset()*1000*60))/(1000*60*60*24)); // Set to change days at midnight in local timezone
-let woordhexNumber = dateUnix - 19619;let WOORD;
+let woordhexNumber = dateUnix - 19619;
+let WOORD;
 let CENTRAALINDEX;
 let CENTRAALLETTER;
 const WOORDLETTERS = [];
@@ -12,7 +13,7 @@ let scoreHistory = [];
 const shuffle = [0, 1, 2, 3, 4, 5, 6];
 let answersShown = false;
 let answersSeen = false;
-let version = "0.9";
+let version = "1.0";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -70,7 +71,7 @@ function getfromStorage(d) {
     }
     // If the day has changed since the last session...
         // localStorage.removeItem("answers");                  // Removes the cached answers to the previous puzzle
-    localStorage.removeItem("centralIndex");
+        //openModal("newday");
     scoreHistory.push(JSON.parse(jsonTodayScore));          // Adds the previous day's score to scoreHistory,
     jsonScoreHistory = JSON.stringify(scoreHistory);        // ... then ...
     localStorage.setItem("score-hist", jsonScoreHistory);   // Saves it in local storage
@@ -104,7 +105,8 @@ function selectWord(d) {
     GUESSES.forEach(g => printOutput(g));   // Needs to be after findSols() so it can print the %age properly
     updateWordCountScore();
     printText("antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
-    
+        //printText("newday-antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
+
     // Swaps the central letter index to the front so it can be avoided during shuffling
     [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
     shuffleLetters();
@@ -310,8 +312,9 @@ document.getElementById("woord-input").addEventListener("keydown", function(even
     }
 });
 
-document.getElementById("woordhex-nummer").innerHTML += woordhexNumber;
-document.getElementById("version").innerHTML += version;
+    //document.getElementById("newday-woordhex-nummer").innerHTML += woordhexNumber;
+document.getElementById("footer-woordhex-nummer").innerHTML += woordhexNumber;
+document.getElementById("footer-version").innerHTML += version;
 
 // Selects the word input box if the screen is presented horizontally
 function focusInput() {
@@ -355,10 +358,11 @@ function shuffleLetters(){
 
 function openModal(id) {
     let modal = document.getElementById(id);
-    modal.style.display = "block";
+    modal.style.display = "flex";
 }
 
 function closeModal(id) {
     let modal = document.getElementById(id);
     modal.style.display = "none";
+    focusInput();
 }
