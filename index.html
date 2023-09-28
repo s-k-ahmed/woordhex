@@ -56,10 +56,10 @@
             <div class="titles">
                 <h1>WOORDHEX</h1>
             </div>
-            <input type="text" id="woord-input">
+            <div id="woord-input" onclick="focusInput()" tabindex="0" contenteditable="true"></div>
             <div class="main">
                 <div id="invalid-guess"></div>
-                <div class="buttons">
+                <div class="letters">
                     <input type="button" id="letter1" onclick="buttonPress(1)">
                     <input type="button" id="letter2" onclick="buttonPress(2)">
                     <input type="button" id="letter3" onclick="buttonPress(3)">
@@ -78,11 +78,12 @@
             <p id="antwoord-tel"></p>
             <p id="test"></p>
             <p id="wordcount"></p>
-            <p id="output"></p>
+            <button class="buttons" id="sort-guesses" onclick="toggleGuessSort()">Sorteren: tijd</button>
+            <p id="guesses"></p>
             <br>
             <div id="pmdiv">
-                <button class="pmbuttons" id="show-answers" onclick="toggleAnswers()">Antwoorden tonen</button>
-                <button class="pmbuttons" id="share" onclick="shareResult()">Score delen</button>
+                <button class="buttons" id="show-answers" onclick="toggleAnswers()">Antwoorden tonen</button>
+                <button class="buttons" id="share" onclick="shareResult()">Score delen</button>
                 <div id="result-shared"></div>
                 <p id="antwoorden"></p>
             </div>

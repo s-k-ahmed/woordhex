@@ -13,7 +13,8 @@ let scoreHistory = [];
 const shuffle = [0, 1, 2, 3, 4, 5, 6];
 let answersShown = false;
 let answersSeen = false;
-let version = "1.0";
+let isSortAZ = false;
+let version = "1.1";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -102,9 +103,9 @@ function selectWord(d) {
         findSols();
         i++;
     }
-    GUESSES.forEach(g => printOutput(g));   // Needs to be after findSols() so it can print the %age properly
+    printGuesses();         // Needs to be after findSols() so it can print the %age properly
     updateWordCountScore();
-    printText("antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
+    printText("antwoord-tel", "De score van de woordheks is 100 (ze heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden)" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
         //printText("newday-antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
 
     // Swaps the central letter index to the front so it can be avoided during shuffling
@@ -133,8 +134,8 @@ function findSols() {
 
 // Takes guess, checks if it is valid, then prints it/an error message and saves it to local storage.
 function submitWord() {
-    let guess = document.getElementById("woord-input").value.toLowerCase();
-    document.getElementById("woord-input").value = "";
+    let guess = document.getElementById("woord-input").innerText.toLowerCase();
+    document.getElementById("woord-input").innerHTML = "";
     if (answersSeen == true) {
         printError("Antwoorden al gezien");
         return;
@@ -142,7 +143,7 @@ function submitWord() {
     let error = isValidWord(guess, GUESSES);
     if (error != true) {
         let errorMessage = (
-            error == "wrongLetters" ? "Niet toegestaan letter(s)" :
+            error == "wrongLetters" ? "Letter(s) niet toegestaan" :
             error == "noCentral" ? "Geen centrale letter" :
             error == "repeat" ? "Woord al gevonden" : null
             );
@@ -154,7 +155,7 @@ function submitWord() {
         return;
     }
     GUESSES.push(guess);
-    printOutput(guess);
+    printGuesses();
     savetoStorage();
     focusInput();
 }
@@ -206,11 +207,23 @@ function isPangram(w) {
     return (guessLetters.length == 7);
 };
 
+function woordheksDidNotFind(w) {
+    return (GUESSES.indexOf(w) != -1 && ANTWOORDEN.indexOf(w) == -1);
+}
+
+function userDidNotFind(w) {
+    return (GUESSES.indexOf(w) == -1 && ANTWOORDEN.indexOf(w) != -1);
+}
+
 /*
     ***DISPLAY FUNCTIONS***
 */
 
-// HTML TEXT
+// HTML PRINTING TEXT
+
+    //document.getElementById("newday-woordhex-nummer").innerHTML += woordhexNumber;
+document.getElementById("footer-woordhex-nummer").innerHTML += woordhexNumber;
+document.getElementById("footer-version").innerHTML += version;
 
 function appendText(id, text) {
     document.getElementById(id).innerHTML += text;
@@ -226,14 +239,31 @@ function testOutput(x) {
 }
 
 // Prints the variable x in the output section and word count + score in the wordcount section
-function printOutput(x) {
-    let currentOutput = document.getElementById("output").innerHTML;
-    if (isPangram(x)) {
-        printText("output", "<b>" + x + "</b><br>" + currentOutput);
-    } else {
-        printText("output", x + "<br>" + currentOutput);
+function printGuesses() {
+    printText("guesses", "");
+    if (isSortAZ) {
+        GUESSES.slice().sort().forEach((guess) => {
+            if (isPangram(guess)) {
+                guess = pangramFormat(guess);
+            }
+            if (woordheksDidNotFind(guess)) {
+                guess = woordheksDidNotFindFormat(guess);
+            }
+            appendText("guesses", guess + "<br>");
+            updateWordCountScore();
+        })
+        return;
     }
-    updateWordCountScore();
+    GUESSES.slice().reverse().forEach((guess) => {
+        if (isPangram(guess)) {
+            guess = pangramFormat(guess);
+        }
+        if (woordheksDidNotFind(guess)) {
+            guess = woordheksDidNotFindFormat(guess);
+        }
+        appendText("guesses", guess + "<br>");
+        updateWordCountScore();
+    })
 }
 
 // Prints the variable x as an invalid error message
@@ -246,13 +276,22 @@ function printError(x) {
 }
 
 // Prints/updates the word count and score
-// TO-DO: Check that scoreHistory works as intended, then implement some way to access it (maybe compare with average score?)
+// TO-DO v1.2+: Check that scoreHistory works as intended, then implement a stats modal
 function updateWordCountScore() {
-    printText("wordcount", "Woorden: <b>" + GUESSES.length + "</b><br>Score: <b>" + calculatePercentage(GUESSES, ANTWOORDEN) + "</b>");
+    printText("wordcount", "Woorden: <b>" + GUESSES.length + "</b><br>Score: <b>" + calculatePercentage(GUESSES, ANTWOORDEN) + "</b>/100");
 }
+
+// HTML DISPLAY ELEMENTS
 
 if (date.getHours() > 17) {
     document.getElementById("pmdiv").style.display = "inline";
+}
+
+// Toggles the order of the guesses
+function toggleGuessSort() {
+    isSortAZ = !isSortAZ;
+    isSortAZ ? printText("sort-guesses", "Sorteren: A-Z") : printText("sort-guesses", "Sorteren: Tijd");
+    printGuesses();
 }
 
 // Toggles the printing of the list of possible answers
@@ -269,10 +308,12 @@ function toggleAnswers() {
     ANTWOORDEN.forEach(x => {
         // If an answer is a pangram, then print it bold
         if (isPangram(x)) {
-            appendText("antwoorden", "<b>" + x + "</b><br>");
-        } else {
-            appendText("antwoorden", x + "<br>");
+            x = pangramFormat(x);
         }
+        if (userDidNotFind(x)) {
+            x = userDidNotFindFormat(x);
+        }
+        appendText("antwoorden", x + "<br>");
     });
     answersShown = true;
     answersSeen = true;
@@ -284,13 +325,19 @@ function shareResult() {
     let scoreGroup = Math.floor(score / 20);
     let yourWords = GUESSES.length;
     let heksWords = ANTWOORDEN.length;
+    let yourPangrams = GUESSES.reduce((total, current) => ZEVENS.indexOf(current) != -1 ? total + 1 : total, 0);
+    let pangramText = yourPangrams;
+    yourPangrams == 1 ? pangramText += " pangram" : pangramText += " pangrammen";
     let youWon = (score > 100);
-    let scoreEmojis = ["✨", "🔮", "🛡", "🏰", "⚔", "🏆"];
+    // let scoreEmojis = ["✨", "🔮", "🛡", "🏰", "⚔", "🏆"];
     let youEmoji = "🏇";
     let heksEmoji = "🧙‍♀️";
+    /*
     youWon ? youEmoji += "👑" : heksEmoji += "👑";
     let emojiText = scoreEmojis.filter((value, index) => index <= scoreGroup).join("");
-    let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + " " + score + "/100\n" + youEmoji + " " + yourWords + " woorden\n" + heksEmoji + " " + heksWords + " woorden\nhttps://s-k-ahmed.github.io/woordhex/";
+    */
+   let emojiText = "🏇⚔✨🧙‍♀️";
+    let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + "\n" + score + " 🆚 100 punten\n" + yourWords + " 🆚 " + heksWords + " woorden\n" + pangramText + "\nhttps://s-k-ahmed.github.io/woordhex/";
     navigator.clipboard.writeText(resultText);
     printText("result-shared", "Resultaat gekopieerd naar klembord");
     document.getElementById("result-shared").style.opacity = 0.8;
@@ -299,22 +346,45 @@ function shareResult() {
     }, 1000)
 }
 
+// MODALS
+
+function openModal(id) {
+    let modal = document.getElementById(id);
+    modal.style.display = "flex";
+}
+
+function closeModal(id) {
+    let modal = document.getElementById(id);
+    modal.style.display = "none";
+    focusInput();
+}
+
 // HTML INPUT
 
 // Sets up word submission on pressing Enter and shuffle on pressing Space
 document.getElementById("woord-input").addEventListener("keydown", function(event){
-    if (event.key === "Enter") {
+    let key = event.key;
+    if (key === "Enter") {
+        event.preventDefault();
         submitWord();
     }
-    if (event.code === "Space") {
+    if (key === " ") {
         event.preventDefault();
         shuffleLetters();
     }
+    if (key === "Backspace") {
+        event.preventDefault();
+        backspace();
+    }
+    if (key.toLowerCase() === CENTRAALLETTER) {
+        event.preventDefault();
+        key = centralLetterFormat(key);
+    }
+    if (alphletters.indexOf(event.key.toLowerCase()) != -1) {
+        event.preventDefault();
+        document.getElementById("woord-input").innerHTML += key.toUpperCase();
+    }
 });
-
-    //document.getElementById("newday-woordhex-nummer").innerHTML += woordhexNumber;
-document.getElementById("footer-woordhex-nummer").innerHTML += woordhexNumber;
-document.getElementById("footer-version").innerHTML += version;
 
 // Selects the word input box if the screen is presented horizontally
 function focusInput() {
@@ -323,16 +393,43 @@ function focusInput() {
 
 // Adds letters to input on button press
 function buttonPress(l) {
-    document.getElementById("woord-input").value += WOORDLETTERS[shuffle[l]].toUpperCase();
+    let letter = WOORDLETTERS[shuffle[l]];
+    if (letter == CENTRAALLETTER) {
+        letter = centralLetterFormat(letter);
+    }
+    document.getElementById("woord-input").innerHTML += letter.toUpperCase();
 };
 
 // Delete the last letter inputted
 function backspace() {
     let inputbox = document.getElementById("woord-input");
-    inputbox.value = inputbox.value.slice(0, inputbox.value.length - 1);
+    let finalChar = inputbox.innerHTML.slice(inputbox.innerHTML.length - 1, inputbox.innerHTML.length);
+    if (finalChar == ">") {
+        inputbox.lastElementChild.remove()
+        return;
+    }
+    inputbox.innerHTML = inputbox.innerHTML.slice(0, inputbox.innerHTML.length - 1);
 }
 
-// HTML BUTTON FORMATTING
+// HTML TEXT FORMATTING
+
+function pangramFormat(x) {
+    return "<span class='pangram'>" + x + "</span>";
+}
+
+function centralLetterFormat(x) {
+    return "<span class='central-letter'>" + x + "</span>";
+}
+
+function woordheksDidNotFindFormat(x) {
+    return "<span class='woordheks-didnotfind'>" + x + "</span>";
+}
+
+function userDidNotFindFormat(x) {
+    return "<span class='user-didnotfind'>" + x + "</span>";
+}
+
+// HTML BUTTON SETUP
 
 // Labels a button with the appropriate letter in the shuffle array
 function assignLetter(l) {
@@ -352,17 +449,4 @@ function shuffleLetters(){
         shuffle.forEach((value) => assignLetter(value));
         shuffle.forEach((v, i) => i > 0 ? document.getElementById("letter"+i).style.color = "white" : null);
     }, 300)
-}
-
-// MODALS
-
-function openModal(id) {
-    let modal = document.getElementById(id);
-    modal.style.display = "flex";
-}
-
-function closeModal(id) {
-    let modal = document.getElementById(id);
-    modal.style.display = "none";
-    focusInput();
 }

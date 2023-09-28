@@ -44,6 +44,7 @@ body {
     .inputs {
         height: 600px;
         max-width: 360px;
+        align-items: center;
     }
 
       input[type=button] {
@@ -56,15 +57,22 @@ body {
         transition: color 200ms;
       }
 
-      input[type=text] {
-          border: 1px solid black;
-          padding: 15px 30px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font: bold 36px Roboto, sans-serif;
-          max-width: 300px;
+      #woord-input {
+        border: 1px solid black;
+        padding: 15px 30px;
+        text-align: center;
+        font: bold 36px Roboto, sans-serif;
+        margin: auto;
+        width: 300px;
+        height: 44px;
+        overflow: clip;
       }
+
+      #woord-input:focus {
+        border: 3px solid black;
+        padding: 13px 28px;
+        border-radius: 4px;
+    }
 
       .main {
         position: relative;
@@ -79,12 +87,12 @@ body {
           top: -55px;
         }
       
-        .buttons {
+        .letters {
           font-size: 0; /*disable white space between inline block element */
           padding: 18px 18px
         }
         
-          .buttons input {
+          .letters input {
             width: var(--s);
             margin: var(--m);
             height: calc(var(--s)*1.1547); 
@@ -104,7 +112,7 @@ body {
             background: gainsboro;
           }
 
-          .buttons::before {
+          .letters::before {
             content: "";
             width: calc(var(--s)/2 + var(--m));
             float: left;
@@ -117,7 +125,12 @@ body {
         width: 480px;
     }
 
-      #output, #antwoorden {
+      .buttons {
+        font-size: 16px;
+        position: relative;
+      }
+
+      #guesses, #antwoorden {
         column-count: 3;
         min-height: 160px;
         orphans: 8;
@@ -126,11 +139,6 @@ body {
       #pmdiv {
         display: none;
       }
-
-        .pmbuttons {
-          font-size: 16px;
-          position: relative;
-        }
       
       footer {
         position: fixed;
@@ -204,6 +212,24 @@ body {
     width: 20%;
   }
 */
+
+.pangram {
+  font-weight: bold;
+}
+
+.CENTRAL-LETTER {
+  color: purple;
+}
+
+.woordheks-didnotfind {
+  color: #AAA;
+  font-style: italic;
+}
+
+.user-didnotfind {
+  color: purple;
+  font-style: italic;
+}
 
 @media (max-width: 960px) {
   .container {
