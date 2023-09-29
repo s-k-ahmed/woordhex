@@ -14,7 +14,7 @@ const shuffle = [0, 1, 2, 3, 4, 5, 6];
 let answersShown = false;
 let answersSeen = false;
 let isSortAZ = false;
-let version = "1.1";
+let version = "1.1.1";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -105,7 +105,7 @@ function selectWord(d) {
     }
     printGuesses();         // Needs to be after findSols() so it can print the %age properly
     updateWordCountScore();
-    printText("antwoord-tel", "De score van de woordheks is 100 (ze heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden)" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
+    printText("antwoord-tel", "De woordheks heeft een score van 100 (ze heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden)" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
         //printText("newday-antwoord-tel", "De woordheks heeft <b>" + ANTWOORDEN.length + "</b> woorden gevonden" + /*"(score = " + calculateScore(ANTWOORDEN) + ")*/ ". Kun je dat evenaren?");
 
     // Swaps the central letter index to the front so it can be avoided during shuffling
@@ -243,25 +243,27 @@ function printGuesses() {
     printText("guesses", "");
     if (isSortAZ) {
         GUESSES.slice().sort().forEach((guess) => {
-            if (isPangram(guess)) {
-                guess = pangramFormat(guess);
-            }
+            let guessOutput = guess;
             if (woordheksDidNotFind(guess)) {
-                guess = woordheksDidNotFindFormat(guess);
+                guessOutput = woordheksDidNotFindFormat(guessOutput);
             }
-            appendText("guesses", guess + "<br>");
+            if (isPangram(guess)) {
+                guessOutput = pangramFormat(guessOutput);
+            }
+            appendText("guesses", guessOutput + "<br>");
             updateWordCountScore();
         })
         return;
     }
     GUESSES.slice().reverse().forEach((guess) => {
-        if (isPangram(guess)) {
-            guess = pangramFormat(guess);
-        }
+        let guessOutput = guess;
         if (woordheksDidNotFind(guess)) {
-            guess = woordheksDidNotFindFormat(guess);
+            guessOutput = woordheksDidNotFindFormat(guessOutput);
         }
-        appendText("guesses", guess + "<br>");
+        if (isPangram(guess)) {
+            guessOutput = pangramFormat(guessOutput);
+        }
+        appendText("guesses", guessOutput + "<br>");
         updateWordCountScore();
     })
 }
@@ -304,16 +306,17 @@ function toggleAnswers() {
         return;
     }
     // If answers were hidden, then shows answers
-        printText("show-answers", "Antwoorden verbergen");
+    printText("show-answers", "Antwoorden verbergen");
     ANTWOORDEN.forEach(x => {
         // If an answer is a pangram, then print it bold
+        let antOutput = x;
         if (isPangram(x)) {
-            x = pangramFormat(x);
+            antOutput = pangramFormat(antOutput);
         }
         if (userDidNotFind(x)) {
-            x = userDidNotFindFormat(x);
+            antOutput = userDidNotFindFormat(antOutput);
         }
-        appendText("antwoorden", x + "<br>");
+        appendText("antwoorden", antOutput + "<br>");
     });
     answersShown = true;
     answersSeen = true;
@@ -325,7 +328,7 @@ function shareResult() {
     let scoreGroup = Math.floor(score / 20);
     let yourWords = GUESSES.length;
     let heksWords = ANTWOORDEN.length;
-    let yourPangrams = GUESSES.reduce((total, current) => ZEVENS.indexOf(current) != -1 ? total + 1 : total, 0);
+    let yourPangrams = GUESSES.reduce((total, current) => ZEVENSLANG.indexOf(current) != -1 ? total + 1 : total, 0);
     let pangramText = yourPangrams;
     yourPangrams == 1 ? pangramText += " pangram" : pangramText += " pangrammen";
     let youWon = (score > 100);

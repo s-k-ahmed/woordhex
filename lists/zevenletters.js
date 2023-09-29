@@ -3,7 +3,7 @@
 	See license at licenses/LICENSE-opentaal.txt
 */
 
-const ZEVENS = [
+const ZEVENSLANG = [
 	"aaibaarheid",
 	"aalbessensap",
 	"aalsteker",

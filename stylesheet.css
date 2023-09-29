@@ -132,8 +132,15 @@ body {
 
       #guesses, #antwoorden {
         column-count: 3;
-        min-height: 160px;
         orphans: 8;
+      }
+
+      #guesses {
+        min-height: 160px;
+      }
+
+      #antwoorden {
+        margin-bottom: 50px;
       }
 
       #pmdiv {
