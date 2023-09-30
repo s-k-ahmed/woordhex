@@ -14,7 +14,7 @@ const shuffle = [0, 1, 2, 3, 4, 5, 6];
 let answersShown = false;
 let answersSeen = false;
 let isSortAZ = false;
-let version = "1.1.1";
+let version = "1.1.2";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")

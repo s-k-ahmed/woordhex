@@ -60,16 +60,24 @@
             <div class="main">
                 <div id="invalid-guess"></div>
                 <div class="letters">
-                    <input type="button" id="letter1" onclick="buttonPress(1)">
-                    <input type="button" id="letter2" onclick="buttonPress(2)">
-                    <input type="button" id="letter3" onclick="buttonPress(3)">
-                    <input type="button" id="letter0" onclick="buttonPress(0)">
-                    <input type="button" id="letter4" onclick="buttonPress(4)">
-                    <input type="button" id="letter5" onclick="buttonPress(5)">
-                    <input type="button" id="letter6" onclick="buttonPress(6)">
-                    <input type="image" id="submit-btn" src="images/arrow-right-to-bracket-solid.svg" alt="Verzenden" onclick="submitWord()">
-                    <input type="image" id="shuffle" src="images/shuffle-solid.svg" alt="Shuffle" onclick="shuffleLetters()">
-                    <input type="image" id="backspace" src="images/delete-left-solid.svg" alt="Backspace" onclick="backspace()">
+                    <div class="letter-row-odd" id="letter-row-1">
+                        <input type="button" id="letter1" onclick="buttonPress(1)">
+                        <input type="button" id="letter2" onclick="buttonPress(2)">
+                    </div>
+                    <div class="letter-row-even" id="letter-row-2">
+                        <input type="button" id="letter3" onclick="buttonPress(3)">
+                        <input type="button" id="letter0" onclick="buttonPress(0)">
+                        <input type="button" id="letter4" onclick="buttonPress(4)">
+                    </div>
+                    <div class="letter-row-odd" id="letter-row-3">
+                        <input type="button" id="letter5" onclick="buttonPress(5)">
+                        <input type="button" id="letter6" onclick="buttonPress(6)">
+                    </div>
+                    <div class="letter-row-even" id="letter-row-4">
+                        <input type="image" id="submit-btn" src="images/arrow-right-to-bracket-solid.svg" alt="Verzenden" onclick="submitWord()">
+                        <input type="image" id="shuffle" src="images/shuffle-solid.svg" alt="Shuffle" onclick="shuffleLetters()">
+                        <input type="image" id="backspace" src="images/delete-left-solid.svg" alt="Backspace" onclick="backspace()">
+                    </div>
                 </div>
             </div>
         </div>

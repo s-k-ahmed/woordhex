@@ -91,35 +91,40 @@ body {
           font-size: 0; /*disable white space between inline block element */
           padding: 18px 18px
         }
+
+          .letter-row-odd {
+            margin-left: calc(var(--s)/2 + var(--m));
+          }
         
-          .letters input {
-            width: var(--s);
-            margin: var(--m);
-            height: calc(var(--s)*1.1547); 
-            display: inline-block;
-            font-size: 30px;
-            clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-            background: grey;
-            color: white;
-            margin-bottom: calc(var(--m) - var(--s)*0.2885); 
-          }
+            .letters input {
+              width: var(--s);
+              margin: var(--m);
+              height: calc(var(--s)*1.1547); 
+              display: inline-block;
+              font-size: 30px;
+              clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+              background: grey;
+              color: white;
+              margin-bottom: calc(var(--m) - var(--s)*0.2885); 
+            }
 
-          #letter0 {
-            background: purple;
-          }
+            #letter0 {
+              background: purple;
+            }
 
-          #submit-btn, #shuffle, #backspace {
-            background: gainsboro;
-          }
+            #submit-btn, #shuffle, #backspace {
+              background: gainsboro;
+            }
 
+          /*
           .letters::before {
             content: "";
             width: calc(var(--s)/2 + var(--m));
             float: left;
             height: 100%;
-            shape-outside: repeating-linear-gradient(#000 0 10%, #0000 0 50%, #000 0 10%, #0000 0 50%);
-            /*shape-outside: radial-gradient(#0000 95%, #000 5%);*/
+            shape-outside: repeating-linear-gradient(#000 0 5%, #0000 0 50%, #000 0 5%, #0000 0 40%);
           }
+          */
   
     .outputs {
         width: 480px;
