@@ -225,11 +225,19 @@ body {
   }
 */
 
+.number {
+  font-weight: bold;
+}
+
+.error {
+  font-style: italic;
+}
+
 .pangram {
   font-weight: bold;
 }
 
-.CENTRAL-LETTER {
+.central-letter {
   color: purple;
 }
 
