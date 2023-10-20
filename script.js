@@ -28,7 +28,6 @@ printFooter();
 selectWord(dateUnix);
 focusInput();
 
-
 /*
     ***GAME FUNCTIONS***
 */
@@ -99,6 +98,9 @@ function selectWord(d) {
 
         // Chooses a word pseudo-randomly from the zevens array
         WOORDNUMMER = ((d ** 3) + j) % ZEVENS.length;
+        if (woordhexNumber == 32) {
+            WOORDNUMMER = 1238;
+        }
         WOORD = ZEVENS[WOORDNUMMER];
         alphletters.forEach((value) => WOORD.indexOf(value) != -1 ? WOORDLETTERS.push(value) : null);   // Goes through the alphabet in order and adds the letters of the chosen word to the array WOORDLETTERS
         
@@ -126,7 +128,7 @@ function selectWord(d) {
         if (woordhexNumber < 24) {
             break;
         }
-        j++    
+        j++;
     }
     printGuesses();         // Needs to be after findSols() so it can print the %age properly
     updateWordCountScore();
