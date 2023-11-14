@@ -1,7 +1,10 @@
 // Initialises global variables
 let date = new Date();
 let dateUnix = Math.floor((Date.now()-(date.getTimezoneOffset()*1000*60))/(1000*60*60*24)); // Set to change days at midnight in local timezone
-let woordhexNumber = dateUnix - 19619;
+let todayWoordhexNumber = dateUnix - 19619;
+let hashNumber = parseInt(location.hash.substring(1));
+let isHashPuzzle = (hashNumber <= todayWoordhexNumber && hashNumber != NaN)
+let woordhexNumber = isHashPuzzle ? hashNumber : todayWoordhexNumber;
 let WOORDNUMMER;
 let WOORD;
 let CENTRAALINDEX;
@@ -9,6 +12,8 @@ let CENTRAALLETTER;
 let WOORDLETTERS = [];
 const alphletters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 let GUESSES = [];
+let HASHGUESSES = [];
+let currentGuesses = [];
 let ANTWOORDEN = [];
 let scoreHistory = [];
 const shuffle = [0, 1, 2, 3, 4, 5, 6];
@@ -17,15 +22,18 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.1.3";
+let version = "1.2.0";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
 }
 
+displayPM();
 printFooter();
+setUpEventListeners();
 // Chooses a word and central letter based on the current day
-selectWord(dateUnix);
+selectPuzzle(woordhexNumber + 19619);
+updateStats();
 focusInput();
 
 /*
@@ -70,7 +78,7 @@ function getfromStorage(d) {
     }
 
     // Only loads and prints guesses if the day is the same as the last session
-    if (jsonDate == d) {
+    if (jsonDate == dateUnix) {
         GUESSES = JSON.parse(jsonGuesses);
         return;
     }
@@ -83,14 +91,50 @@ function getfromStorage(d) {
     answersSeen = false;
 }
 
+function selectPuzzle(d) {
+    getfromStorage(d);
+    selectWord(d);
+    printGuesses();         // Needs to be after findSols() -- in selectWord() -- so it can print the %age properly
+    updateWordCountScore();
+    printText("antwoord-tel", "Kun je de score van de woordheks evenaren?");
+    document.getElementById("heks-circle-words").append(ANTWOORDEN.length);
+
+    // Swaps the central letter index to the front so it can be avoided during shuffling
+    [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
+    shuffleLetters();
+    savetoStorage();
+}
+
+function selectCentralLetter(d) {
+    // Loops through the central indices until it finds one where the witch's wordcount is between the min and max
+    let i = 0;
+            
+    // (Until #23, 23rd power of dateUnix was used, but this lacked precision)
+    if (woordhexNumber < 24) {
+        CENTRAALINDEX = (d ** 23) % 7;
+        CENTRAALLETTER = WOORDLETTERS[CENTRAALINDEX];
+        findSols();
+    }
+    while (i < 7 && (ANTWOORDEN.length < minWordCount || ANTWOORDEN.length > maxWordCount)) {
+        // localStorage.removeItem("answers");
+        ANTWOORDEN = [];
+        // Chooses a required letter from the word 
+        // (5th power of woordhexNumber gives equal chance for the 7 letters, and is precise)
+        if (woordhexNumber < 24) {
+            CENTRAALINDEX = (CENTRAALINDEX + 1) % 7;
+        } else {
+            CENTRAALINDEX = ((woordhexNumber ** 5) + i) % 7;
+        }
+        CENTRAALLETTER = WOORDLETTERS[CENTRAALINDEX];
+        findSols();
+        i++;
+    }
+}
+
 // Uses the day as a seed to select a pangram word and central letter pseudo-randomly
 // TO-DO: Tidy up while loops used for word selection
-// TO-DO: Split into multiple functions
 function selectWord(d) {
-    getfromStorage(d);
-
     // Loops through words until it finds one between the min and max counts
-    // TO-DO: Make it so that it picks the one closest to a wordcount of 23?
     let j = 0;
     while (j < 10 && (ANTWOORDEN.length < minWordCount || ANTWOORDEN.length > maxWordCount)) {
         WOORDLETTERS = [];
@@ -104,66 +148,28 @@ function selectWord(d) {
         WOORD = ZEVENS[WOORDNUMMER];
         alphletters.forEach((value) => WOORD.indexOf(value) != -1 ? WOORDLETTERS.push(value) : null);   // Goes through the alphabet in order and adds the letters of the chosen word to the array WOORDLETTERS
         
-        // Loops through the central indices until it finds one where the witch's wordcount is between the min and max
-        let i = 0;
-        
-        // (Until #23, 23rd power of dateUnix was used, but this lacked precision)
-        if (woordhexNumber < 24) {
-            CENTRAALINDEX = (d ** 23) % 7;
-        }
-        while (i < 7 && (ANTWOORDEN.length < minWordCount || ANTWOORDEN.length > maxWordCount)) {
-            // localStorage.removeItem("answers");
-            ANTWOORDEN = [];
-            // Chooses a required letter from the word 
-            // (5th power of woordhexNumber gives equal chance for the 7 letters, and is precise)
-            if (woordhexNumber < 24) {
-                CENTRAALINDEX = (CENTRAALINDEX + 1) % 7;
-            } else {
-                CENTRAALINDEX = ((woordhexNumber ** 5) + i) % 7;
-            }
-            CENTRAALLETTER = WOORDLETTERS[CENTRAALINDEX];
-            findSols();
-            i++;
-        }
+        selectCentralLetter(d);
+
         if (woordhexNumber < 24) {
             break;
         }
         j++;
     }
-    printGuesses();         // Needs to be after findSols() so it can print the %age properly
-    updateWordCountScore();
-    printText("antwoord-tel", "De woordheks heeft een score van 100 (met ", numberFormat(ANTWOORDEN.length), " woorden).", lineBreak(), "Kun je dat evenaren?");
-    
-
-    // Swaps the central letter index to the front so it can be avoided during shuffling
-    [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
-    shuffleLetters();
-    savetoStorage();
 };
 
 // Finds all solutions to today's puzzle and saves them in the array ANTWOORDEN
 function findSols() {
-    /*
-        let jsonAnswers = localStorage.getItem("answers");
-        // Imports answers from cache and escapes if there is cached content
-        // (FYI: cached answers data is removed for new puzzles in getfromStorage())
-        if (jsonAnswers != null) {
-            ANTWOORDEN = JSON.parse(jsonAnswers);
-            return;
-        }
-        // If there is no cached data...
-    */
     BASISWOORDEN.forEach(x => isValidWord(x, ANTWOORDEN) === true ? ANTWOORDEN.push(x) : null); // Checks each word in the smaller list to see if it is a valid answer
-    ANTWOORDEN.sort();                                              // Sorts them alphabetically
-        //jsonAnswers = JSON.stringify(ANTWOORDEN);                       // ... then ...
-        //localStorage.setItem("answers", jsonAnswers);                   // Saves the valid answers in local storage
+    ANTWOORDEN.sort();               // Sorts them alphabetically
+}
+
 }
 
 // Takes guess, checks if it is valid, then prints it/an error message and saves it to local storage.
 function submitWord() {
     let guess = document.getElementById("woord-input").innerText.toLowerCase();
     document.getElementById("woord-input").textContent = "";
-    if (answersSeen == true) {
+    if (answersSeen == true && !isHashPuzzle) {
         printError("Antwoorden al gezien");
         return;
     }
@@ -182,9 +188,15 @@ function submitWord() {
         printError("Woord niet herkend");
         return;
     }
-    GUESSES.push(guess);
+    if (isHashPuzzle) {
+        HASHGUESSES.push(guess);
+    }
+    if (!isHashPuzzle) {
+        GUESSES.push(guess);
+    }
     printGuesses();
     savetoStorage();
+    updateStats();
     focusInput();
 }
 
@@ -233,6 +245,20 @@ function calculatePercentage(g, a) {
     return Math.round(calculateScore(g)*100/calculateScore(a));
 }
 
+function commentPercent(x) {
+    let commentMessage = (
+        x < 10 ? "Blijf doorgaan!" :
+        x < 20 ? "Goed" :
+        x < 40 ? "Prima" :
+        x < 50 ? "Super" :
+        x < 70 ? "Fantastisch" :
+        x < 100 ? "Uitstekend" :
+        x >= 100 ? "Gefeliciteerd, je hebt gewonnen!" :
+        "Hoe heb je dit gedaan? Bravo."
+    );
+    return commentMessage;
+}
+
 // Returns TRUE if w has 7 unique letters
 function isPangram(w) {
     let guessLetters = [];
@@ -241,10 +267,16 @@ function isPangram(w) {
 };
 
 function woordheksDidNotFind(w) {
+    if (isHashPuzzle) {
+        return (HASHGUESSES.indexOf(w) != -1 && ANTWOORDEN.indexOf(w) == -1)
+    }
     return (GUESSES.indexOf(w) != -1 && ANTWOORDEN.indexOf(w) == -1);
 }
 
 function userDidNotFind(w) {
+    if (isHashPuzzle) {
+        return (HASHGUESSES.indexOf(w) == -1 && ANTWOORDEN.indexOf(w) != -1)
+    }
     return (GUESSES.indexOf(w) == -1 && ANTWOORDEN.indexOf(w) != -1);
 }
 
@@ -273,8 +305,9 @@ function testOutput(x) {
 // Prints the variable x in the output section and word count + score in the wordcount section
 function printGuesses() {
     printText("guesses", "");
+    currentGuesses = isHashPuzzle ? HASHGUESSES : GUESSES;
     if (isSortAZ) {
-        GUESSES.slice().sort().forEach((guess) => {
+        currentGuesses.slice().sort().forEach((guess) => {
             let guessOutput = guess;
             if (woordheksDidNotFind(guess)) {
                 guessOutput = woordheksDidNotFindFormat(guessOutput);
@@ -287,7 +320,7 @@ function printGuesses() {
         })
         return;
     }
-    GUESSES.slice().reverse().forEach((guess) => {
+    currentGuesses.slice().reverse().forEach((guess) => {
         let guessOutput = guess;
         if (woordheksDidNotFind(guess)) {
             guessOutput = woordheksDidNotFindFormat(guessOutput);
@@ -315,16 +348,57 @@ function printFooter() {
 }
 
 // Prints/updates the word count and score
-// TO-DO v1.2+: Check that scoreHistory works as intended, then implement a stats modal
 function updateWordCountScore() {
-    printText("wordcount", "Woorden: ", numberFormat(GUESSES.length), lineBreak());
-    appendText("wordcount", "Score: ", numberFormat(calculatePercentage(GUESSES, ANTWOORDEN)), "/100");
+    currentGuesses = isHashPuzzle ? HASHGUESSES : GUESSES;
+    let percent = calculatePercentage(currentGuesses, ANTWOORDEN);
+    //printText("wordcount", "Woorden: ", numberFormat(currentGuesses.length), lineBreak());
+    //appendText("wordcount", "Score: ", numberFormat(percent), " - ", commentPercent(percent));
+    printText("score-comment", commentPercent(percent));
+    let csspercent = percent
+    if (percent > 111) {
+        csspercent = 111;
+    }
+    document.querySelector(":root").style.setProperty('--userscore', csspercent + "%");
+    document.getElementById("user-circle-words").textContent = currentGuesses.length;
+    document.getElementById("user-circle-score").textContent = percent;
+    if (percent > 95 && percent < 100) {
+        document.getElementById("user-circle-words-cont").style.left = "-10px";
+        document.getElementById("user-circle-score-cont").style.left = "-10px";
+        document.getElementById("heks-circle-words-cont").style.left = "10px";
+        document.getElementById("heks-circle-score-cont").style.left = "10px";
+    }
+    if (percent >= 100 && percent < 107) {
+        document.getElementById("user-circle-words-cont").style.left = "15px";
+        document.getElementById("user-circle-score-cont").style.left = "15px";
+        document.getElementById("heks-circle-words-cont").style.left = "-15px";
+        document.getElementById("heks-circle-score-cont").style.left = "-15px";
+    }
+}
+
+function updateStats() {
+    let scoreAll = scoreHistory ? scoreHistory : [];
+    scoreAll.push(calculatePercentage(GUESSES, ANTWOORDEN));
+    let topScore = scoreAll.reduce((a, b) => Math.max(a, b), -Infinity);
+    printText("highscore-num", topScore);
+
+    let totalScore = scoreAll.reduce((total, current) => total + current, 0);
+    let nonZeroDays = scoreAll.reduce((total, current) => current > 0 ? total + 1 : total, 0);
+    let avgScore = nonZeroDays == 0 ? "-" : Math.round(totalScore / nonZeroDays);
+    printText("averagescore-num", avgScore);
+
+    let winCount = scoreAll.reduce((total, current) => current > 100 ? total + 1 : total, 0);
+    printText("wincount-num", winCount);
+
+    let greatCount = scoreAll.reduce((total, current) => current > 50 ? total + 1 : total, 0);
+    printText("greatcount-num", greatCount);
 }
 
 // HTML DISPLAY ELEMENTS
 
-if (date.getHours() > 17) {
-    document.getElementById("pmdiv").style.display = "inline";
+function displayPM() {
+    if (date.getHours() > 17) {
+        document.getElementById("pmdiv").style.display = "inline";
+    }
 }
 
 // Toggles the order of the guesses
@@ -336,6 +410,7 @@ function toggleGuessSort() {
 
 // Toggles the printing of the list of possible answers
 function toggleAnswers() {
+    closeModal("show-answers-confirm");
     printText("antwoorden", "");        // Clears answer HTML paragraph
     // If answers were already showing, then escapes
     if (answersShown) {
@@ -357,16 +432,19 @@ function toggleAnswers() {
         appendText("antwoorden", antOutput, lineBreak());
     });
     answersShown = true;
-    answersSeen = true;
+    if (!isHashPuzzle) {
+        answersSeen = true;
+    }
     savetoStorage();
 }; 
 
 function shareResult() {
-    let score = calculatePercentage(GUESSES, ANTWOORDEN);
+    currentGuesses = isHashPuzzle ? HASHGUESSES : GUESSES;
+    let score = calculatePercentage(currentGuesses, ANTWOORDEN);
     // let scoreGroup = Math.floor(score / 20);
-    let yourWords = GUESSES.length;
+    let yourWords = currentGuesses.length;
     let heksWords = ANTWOORDEN.length;
-    let yourPangrams = GUESSES.reduce((total, current) => ZEVENSLANG.indexOf(current) != -1 ? total + 1 : total, 0);
+    let yourPangrams = currentGuesses.reduce((total, current) => ZEVENSLANG.indexOf(current) != -1 ? total + 1 : total, 0);
     let pangramText = yourPangrams;
     yourPangrams == 1 ? pangramText += " pangram" : pangramText += " pangrammen";
     // let youWon = (score > 100);
@@ -390,6 +468,10 @@ function shareResult() {
 // MODALS
 
 function openModal(id) {
+    if (id == "show-answers-confirm" && (answersSeen || isHashPuzzle)) {
+        toggleAnswers();
+        return;
+    }
     let modal = document.getElementById(id);
     modal.style.display = "flex";
 }
@@ -403,33 +485,35 @@ function closeModal(id) {
 // HTML INPUT
 
 // Sets up word submission on pressing Enter and shuffle on pressing Space
-document.getElementById("woord-input").addEventListener("keydown", function(event){
-    if (event.ctrlKey) {
-        return;
-    }
-    let key = event.key;
-    let keyUpperCase = key.toUpperCase();
-    if (key === "Enter") {
-        event.preventDefault();
-        submitWord();
-    }
-    if (key === " ") {
-        event.preventDefault();
-        shuffleLetters();
-    }
-    if (key === "Backspace") {
-        event.preventDefault();
-        backspace();
-    }
-    if (key.toLowerCase() === CENTRAALLETTER) {
-        event.preventDefault();
-        keyUpperCase = centralLetterFormat(keyUpperCase);
-    }
-    if (alphletters.indexOf(event.key.toLowerCase()) != -1) {
-        event.preventDefault();
-        document.getElementById("woord-input").append(keyUpperCase);
-    }
-});
+function setUpEventListeners() {
+    document.getElementById("woord-input").addEventListener("keydown", function(event){
+        if (event.ctrlKey) {
+            return;
+        }
+        let key = event.key;
+        let keyUpperCase = key.toUpperCase();
+        if (key === "Enter") {
+            event.preventDefault();
+            submitWord();
+        }
+        if (key === " ") {
+            event.preventDefault();
+            shuffleLetters();
+        }
+        if (key === "Backspace") {
+            event.preventDefault();
+            backspace();
+        }
+        if (key.toLowerCase() === CENTRAALLETTER) {
+            event.preventDefault();
+            keyUpperCase = centralLetterFormat(keyUpperCase);
+        }
+        if (alphletters.indexOf(event.key.toLowerCase()) != -1) {
+            event.preventDefault();
+            document.getElementById("woord-input").append(keyUpperCase);
+        }
+    });
+}
 
 // Selects the word input box if the screen is presented horizontally
 function focusInput() {
@@ -444,12 +528,20 @@ function buttonPress(l) {
         upperCaseLetter = centralLetterFormat(upperCaseLetter);
     }
     document.getElementById("woord-input").append(upperCaseLetter);
+
+    // Darken button after press
+    let bgcolor = l > 0 ? "grey" : "purple";
+    let darkbgcolor = l > 0 ? "rgb(87, 87, 87)" : "rgb(87, 0, 87)";
+    document.getElementById("letter"+l).style.background = darkbgcolor;
+    setTimeout(() => {
+        document.getElementById("letter"+l).style.background = bgcolor;
+    }, 200)
 };
 
 // Delete the last letter inputted
 function backspace() {
     let inputbox = document.getElementById("woord-input");
-    inputbox.lastChild.remove();
+    inputbox.lastChild ? inputbox.lastChild.remove() : null;
 }
 
 // HTML TEXT FORMATTING

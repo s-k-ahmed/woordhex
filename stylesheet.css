@@ -1,3 +1,9 @@
+:root {
+  --userscore: 0%;
+  --hekssliderleft: 90%;
+  --usersliderleft: calc(0.90 * var(--userscore));
+}
+
 h1 {
   font: bold 36px Roboto, sans-serif;
   text-align: center;
@@ -11,7 +17,12 @@ h2 {
 }
 
 p, ul {
-font: 16px Roboto, sans-serif;
+  font: 16px Roboto, sans-serif;
+}
+
+#score-comment {
+  font-weight: bold;
+  margin-bottom: 0px;
 }
 
 a:link {
@@ -42,9 +53,9 @@ body {
     }
 
     .inputs {
-        height: 600px;
-        max-width: 360px;
-        align-items: center;
+      height: 600px;
+      max-width: 360px;
+      align-items: center;
     }
 
       input[type=button] {
@@ -103,7 +114,7 @@ body {
               display: inline-block;
               font-size: 30px;
               clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-              background: grey;
+              background-color: grey;
               color: white;
               margin-bottom: calc(var(--m) - var(--s)*0.2885); 
             }
@@ -127,8 +138,72 @@ body {
           */
   
     .outputs {
-        width: 480px;
+      width: 480px;
     }
+
+      .slider-container {
+        height: 5px;
+        width: 100%;
+        margin: 50px 0px;
+      }
+
+        .slider-range {
+          height: 5px;
+          width: 100%;
+          background: gainsboro;
+          margin: 20px 0px;
+          position: relative;
+        }
+
+          .slider-progress {
+            height: 5px;
+            width: var(--usersliderleft);
+            background: grey;
+            position: relative;
+            transition: width 1000ms;
+          }
+
+          .slider-circle {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -7.5px;
+            transition: left 1000ms;
+          }
+
+          #user-circle {
+            z-index: 1;
+            background: grey;
+            color: grey;
+            left: calc(var(--usersliderleft) - 7.5px);
+          }
+
+          #woordheks-circle {
+            background: purple;
+            color: purple;
+            left: calc(var(--hekssliderleft) - 7.5px);
+          }
+
+            .slider-circle-text {
+              position: absolute;
+              text-align: center;
+              margin: auto;
+              width: 20px;
+            }
+
+            .slider-circle-words {
+              bottom: 25px;
+            }
+
+            .slider-circle-score {
+              bottom: -25px;
+            }
+              
+              .slider-circle-text-span {
+                margin: auto -100%;   /* This makes sure that 3-digits numbers are centred */
+                transition: left 1000ms;
+              }
 
       .buttons {
         font-size: 16px;
@@ -138,10 +213,11 @@ body {
       #guesses, #antwoorden {
         column-count: 3;
         orphans: 8;
+        font-size: 14px;
       }
 
       #guesses {
-        min-height: 160px;
+        min-height: 140px;
       }
 
       #antwoorden {
@@ -171,7 +247,7 @@ body {
       border-radius: 6px;
       padding: 8px;
       position: absolute;
-      z-index: 1;
+      z-index: 2;
       transition: opacity 600ms;
     }
 
@@ -179,7 +255,7 @@ body {
   display: none;
   align-items: flex-start;
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 3; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -195,10 +271,8 @@ body {
     margin: 20px auto; /* 20px from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
   }
 
-    /* The Close Button */
     .close {
       color: #aaa;
       float: right;
@@ -212,6 +286,37 @@ body {
       text-decoration: none;
       cursor: pointer;
     }
+
+  #about-content {
+    width: 80%
+  }
+
+#stats {
+  align-items: center;
+}
+
+  #stats-content {
+    width: 50%
+  }
+
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-content: flex-start;
+    }
+
+      .stats-block {
+        text-align: center;
+        margin: 10px auto;
+        width: 120px;
+      }
+
+        .stats-num p {
+          font-size: 48px;
+          font-weight: bold;
+          margin: 10px auto;
+        }
 
 /*
 #newday {
@@ -255,10 +360,10 @@ body {
   .container {
     flex-direction: column;
   }
-  .outputs{
+    .outputs{
       max-width: 360px;
-  }
-  footer {
-    position: static;
-  }
+    }
+      footer {
+        position: static;
+      }
 }

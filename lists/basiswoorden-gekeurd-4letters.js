@@ -70940,8 +70940,6 @@ const WOORDEN = [
 	'hoving',
 	'hozebek',
 	'hozen',
-	'http',
-	'https',
 	'hubbleconstante',
 	'hubertusbrood',
 	'hudo',

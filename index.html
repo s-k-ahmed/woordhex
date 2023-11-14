@@ -19,7 +19,7 @@
             <p>In de puzzel worden 7 letters getoond, waarmee je woorden kunt maken.</p>
             <ul>
                 <li>Elk woord moet ten minste 4 letters bevatten.</li>
-                <li>Je mag elke letter zo vaak je wil gebruiken.</li>
+                <li>Je mag elke letter zo vaak je wil en in elke volgorde gebruiken.</li>
                 <li>Je moet de centrale letter gebruiken in elk woord.</li>
                 <li>De woordenlijst bevat geen namen van mensen of plaatsen; bovendien staan er weinig werkwoordvormen in.</li>
             </ul> 
@@ -50,6 +50,58 @@
         </div>
     </div>
     -->
+
+    <div class="modal" id="stats">
+        <div class="modal-content" id="stats-content">
+            <span class="close" onclick="closeModal('stats')">&times;</span>
+            <div class="stats-container">
+                <div class="stats-block" id="highscore-block">
+                    <div class="stats-num">
+                        <p id="highscore-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Topscore</p>
+                    </div>
+                </div>
+                <div class="stats-block" id="averagescore-block">
+                    <div class="stats-num">
+                        <p id="averagescore-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Gemiddelde score</p>
+                    </div>
+                </div>
+                <div class="stats-block" id="wincount-block">
+                    <div class="stats-num">
+                        <p id="wincount-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Overwinningen (100+)</p>
+                    </div>
+                </div>
+                <div class="stats-block" id="greatcount-block">
+                    <div class="stats-num">
+                        <p id="greatcount-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Aantal "Super" (50+)</p>
+                    </div>
+                </div>
+            </div>
+            <p id="highscore"></p>
+            <p id="averagescore"></p>
+            <p id="wincount"></p>
+        </div>
+    </div>
+
+    <div class="modal" id="show-answers-confirm">
+        <div class="modal-content" id="show-answers-confirm-content">
+            <span class="close" onclick="closeModal('show-answers-confirm')">&times;</span>
+            <h2>Wil je zeker de antwoorden zien?</h2>
+            <p>Daarna kun je geen woorden meer raden.</p>
+            <button class="buttons" id="show-answers-confirm-btn" onclick="toggleAnswers()">Antwoorden tonen</button>
+        </div>
+    </div>
 
     <div class="container">
         <div class="inputs">
@@ -85,12 +137,36 @@
         <div class="outputs">
             <p id="antwoord-tel"></p>
             <p id="test"></p>
+            <!--
             <p id="wordcount"></p>
+            -->
+            <p id="score-comment"></p>
+            <div class="slider-container">
+                <div class="slider-range">
+                    <div class="slider-progress"></div>
+                    <div class="slider-circle" id="user-circle">
+                        <div class="slider-circle-text slider-circle-words" id="user-circle-words-cont">
+                            <span class="slider-circle-text-span" id="user-circle-words"></span>
+                        </div>
+                        <div class="slider-circle-text slider-circle-score" id="user-circle-score-cont">
+                            <span class="slider-circle-text-span" id="user-circle-score"></span>
+                        </div>
+                    </div>
+                    <div class="slider-circle" id="woordheks-circle">
+                        <div class="slider-circle-text slider-circle-words" id="heks-circle-words-cont">
+                            <span class="slider-circle-text-span" id="heks-circle-words"></span>
+                        </div>
+                        <div class="slider-circle-text slider-circle-score" id="heks-circle-score-cont">
+                            <span class="slider-circle-text-span" id="heks-circle-score">100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button class="buttons" id="sort-guesses" onclick="toggleGuessSort()">Sorteren: tijd</button>
+            <button class="buttons" id="open-stats" onclick="openModal('stats')">Statistieken bekijken</button>
             <p id="guesses"></p>
-            <br>
             <div id="pmdiv">
-                <button class="buttons" id="show-answers" onclick="toggleAnswers()">Antwoorden tonen</button>
+                <button class="buttons" id="show-answers" onclick="openModal('show-answers-confirm')">Antwoorden tonen</button>
                 <button class="buttons" id="share" onclick="shareResult()">Score delen</button>
                 <div id="result-shared"></div>
                 <p id="antwoorden"></p>
