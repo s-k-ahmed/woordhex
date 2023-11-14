@@ -163,6 +163,24 @@ body {
             transition: width 1000ms;
           }
 
+          .slider-label {
+            z-index: -1;
+            opacity: 75%;
+            color: gainsboro;
+            width: 100%;
+            margin: 0px auto;
+            position: absolute;
+            text-align: center;
+          }
+
+            #slider-words-label {
+              bottom: 10px;
+            }
+
+            #slider-score-label {
+              bottom: -25px;
+            }
+
           .slider-circle {
             height: 20px;
             width: 20px;

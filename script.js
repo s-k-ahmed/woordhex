@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.1";
+let version = "1.2.2";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -96,7 +96,7 @@ function selectPuzzle(d) {
     selectWord(d);
     printGuesses();         // Needs to be after findSols() -- in selectWord() -- so it can print the %age properly
     updateWordCountScore();
-    printText("antwoord-tel", "Kun je de score van de woordheks evenaren?");
+    printText("antwoord-tel", "De woordheks heeft ", numberFormat(ANTWOORDEN.length), " woorden gevonden. Kun je haar score evenaren?");
     document.getElementById("heks-circle-words").append(ANTWOORDEN.length);
 
     // Swaps the central letter index to the front so it can be avoided during shuffling
