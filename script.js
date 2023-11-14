@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.0";
+let version = "1.2.1";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -163,7 +163,6 @@ function findSols() {
     ANTWOORDEN.sort();               // Sorts them alphabetically
 }
 
-}
 
 // Takes guess, checks if it is valid, then prints it/an error message and saves it to local storage.
 function submitWord() {
