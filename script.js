@@ -3,7 +3,7 @@ let date = new Date();
 let dateUnix = Math.floor((Date.now()-(date.getTimezoneOffset()*1000*60))/(1000*60*60*24)); // Set to change days at midnight in local timezone
 let todayWoordhexNumber = dateUnix - 19619;
 let hashNumber = parseInt(location.hash.substring(1));
-let isHashPuzzle = (hashNumber <= todayWoordhexNumber && hashNumber != NaN)
+let isHashPuzzle = (hashNumber < todayWoordhexNumber && hashNumber != NaN)
 let woordhexNumber = isHashPuzzle ? hashNumber : todayWoordhexNumber;
 let WOORDNUMMER;
 let WOORD;
@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.2";
+let version = "1.2.3";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -31,6 +31,7 @@ if (typeof(Storage) == "undefined") {
 displayPM();
 printFooter();
 setUpEventListeners();
+setUpPuzzleMenu();
 // Chooses a word and central letter based on the current day
 selectPuzzle(woordhexNumber + 19619);
 updateStats();
@@ -96,7 +97,7 @@ function selectPuzzle(d) {
     selectWord(d);
     printGuesses();         // Needs to be after findSols() -- in selectWord() -- so it can print the %age properly
     updateWordCountScore();
-    printText("antwoord-tel", "De woordheks heeft ", numberFormat(ANTWOORDEN.length), " woorden gevonden. Kun je haar score evenaren?");
+    printText("antwoord-tel", "Kun je de score van de woordheks evenaren?");
     document.getElementById("heks-circle-words").append(ANTWOORDEN.length);
 
     // Swaps the central letter index to the front so it can be avoided during shuffling
@@ -172,7 +173,8 @@ function submitWord() {
         printError("Antwoorden al gezien");
         return;
     }
-    let error = isValidWord(guess, GUESSES);
+    currentGuesses = isHashPuzzle ? HASHGUESSES : GUESSES;
+    let error = isValidWord(guess, currentGuesses);
     if (error != true) {
         let errorMessage = (
             error == "tooShort" ? "Te kort" :
@@ -375,7 +377,8 @@ function updateWordCountScore() {
 }
 
 function updateStats() {
-    let scoreAll = scoreHistory ? scoreHistory : [];
+    let scoreAll =[];
+    scoreAll = scoreHistory ? [...scoreHistory] : [];
     scoreAll.push(calculatePercentage(GUESSES, ANTWOORDEN));
     let topScore = scoreAll.reduce((a, b) => Math.max(a, b), -Infinity);
     printText("highscore-num", topScore);
@@ -455,7 +458,8 @@ function shareResult() {
     let emojiText = scoreEmojis.filter((value, index) => index <= scoreGroup).join("");
     */
     let emojiText = "🏇⚔✨🧙‍♀️";
-    let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + "\n" + score + " 🆚 100 punten\n" + yourWords + " 🆚 " + heksWords + " woorden\n" + pangramText + "\nhttps://s-k-ahmed.github.io/woordhex/";
+    let hash = isHashPuzzle ? "#" + hashNumber : "";
+    let resultText = "WOORDHEX #" + woordhexNumber + "\n" + emojiText + "\n" + score + " 🆚 100 punten\n" + yourWords + " 🆚 " + heksWords + " woorden\n" + pangramText + "\nhttps://s-k-ahmed.github.io/woordhex" + hash;
     navigator.clipboard.writeText(resultText);
     printText("result-shared", "Resultaat gekopieerd naar klembord");
     document.getElementById("result-shared").style.opacity = 0.8;
@@ -512,6 +516,20 @@ function setUpEventListeners() {
             document.getElementById("woord-input").append(keyUpperCase);
         }
     });
+}
+
+function setUpPuzzleMenu() {
+    for (let i = todayWoordhexNumber; i > 0; i--) {
+        let puzzleBlock = document.createElement("div");
+        puzzleBlock.classList.add("puzzle-block");
+        puzzleBlock.append(i);
+        puzzleBlock.onclick = () => {
+            location.replace(location.origin + location.pathname + "#" + i);
+            location.reload();
+        }
+        let puzzleGrid = document.getElementById("puzzle-grid");
+        puzzleGrid.append(puzzleBlock);
+    }
 }
 
 // Selects the word input box if the screen is presented horizontally

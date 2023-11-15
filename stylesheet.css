@@ -22,7 +22,12 @@ p, ul {
 
 #score-comment {
   font-weight: bold;
+  color: black;
   margin-bottom: 0px;
+}
+
+a {
+  margin-right: 40px;
 }
 
 a:link {
@@ -53,7 +58,7 @@ body {
     }
 
     .inputs {
-      height: 600px;
+      height: 525px;
       max-width: 360px;
       align-items: center;
     }
@@ -69,34 +74,29 @@ body {
       }
 
       #woord-input {
-        border: 1px solid black;
-        padding: 15px 30px;
+        border: 2px solid grey;
+        border-radius: 10px;
+        padding: 10px 20px;
         text-align: center;
-        font: bold 36px Roboto, sans-serif;
+        font: bold 30px Roboto, sans-serif;
         margin: auto;
-        width: 300px;
-        height: 44px;
+        width: 270px;
+        height: 35px;
         overflow: clip;
       }
 
       #woord-input:focus {
-        border: 3px solid black;
-        padding: 13px 28px;
-        border-radius: 4px;
-    }
+        border: 2px solid black;
+      }
 
       .main {
         position: relative;
         display: flex;
         justify-content: center;
-        --s: 100px;  /* size  */
+        --s: 90px;  /* size  */
         --m: 4px;    /* margin */
         --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
       }
-        
-        #invalid-guess {
-          top: -55px;
-        }
       
         .letters {
           font-size: 0; /*disable white space between inline block element */
@@ -137,6 +137,16 @@ body {
           }
           */
   
+      .inputbox {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }   
+        #invalid-guess {
+          bottom: 20px;
+          margin: 0px auto;
+        }
+
     .outputs {
       width: 480px;
     }
@@ -253,7 +263,6 @@ body {
       }
       
         .footer-span {
-          margin-left: 40px;
           color: gainsboro;
         }
 
@@ -289,6 +298,7 @@ body {
     margin: 20px auto; /* 20px from the top and centered */
     padding: 20px;
     border: 1px solid #888;
+    width: 80%;
   }
 
     .close {
@@ -314,14 +324,13 @@ body {
 }
 
   #stats-content {
-    width: 50%
+    width: 50%;
   }
 
     .stats-container {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
-      align-content: flex-start;
     }
 
       .stats-block {
@@ -347,6 +356,38 @@ body {
     width: 20%;
   }
 */
+
+    .grid-container {
+      display: flex;
+    }
+
+      #puzzle-grid {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+      }
+
+        .puzzle-block {
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          width: 100px;
+          height: 80px;
+          background-color: rgb(240, 240, 240);
+          border: 2px solid grey;
+          border-radius: 10px;
+          font-size: 36px;
+          margin: 10px;
+          cursor: pointer;
+        }
+
+        .puzzle-block:hover {
+          background-color: gainsboro;
+        }
 
 .number {
   font-weight: bold;
@@ -381,6 +422,11 @@ body {
     .outputs{
       max-width: 360px;
     }
+      
+      #guesses, #antwoorden {
+        font-size: 16px;
+      }
+
       footer {
         position: static;
       }

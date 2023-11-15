@@ -54,6 +54,7 @@
     <div class="modal" id="stats">
         <div class="modal-content" id="stats-content">
             <span class="close" onclick="closeModal('stats')">&times;</span>
+            <h1>Statistieken</h1>
             <div class="stats-container">
                 <div class="stats-block" id="highscore-block">
                     <div class="stats-num">
@@ -84,7 +85,7 @@
                         <p id="greatcount-num"></p>
                     </div>
                     <div class="stats-btmtext">
-                        <p>Aantal "Super" (50+)</p>
+                        <p>Aantal "Fantastisch" (50+)</p>
                     </div>
                 </div>
             </div>
@@ -103,14 +104,27 @@
         </div>
     </div>
 
+    <div class="modal" id="puzzle-menu">
+        <div class="modal-content" id="puzzle-menu-cont">
+            <span class="close" onclick="closeModal('puzzle-menu')">&times;</span>
+            <h1>Woordhex Puzzelkaart</h1>
+            <h2>Reis terug in de tijd!</h2>
+            <div class="grid-container">
+                <div class="puzzle-grid" id="puzzle-grid"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="inputs">
             <div class="titles">
                 <h1>WOORDHEX</h1>
             </div>
-            <div id="woord-input" onclick="focusInput()" tabindex="0" contenteditable="true"></div>
-            <div class="main">
+            <div class="inputbox">
+                <div id="woord-input" onclick="focusInput()" tabindex="0" contenteditable="true"></div>
                 <div id="invalid-guess"></div>
+            </div>
+            <div class="main">
                 <div class="letters">
                     <div class="letter-row-odd" id="letter-row-1">
                         <input type="button" id="letter1" onclick="buttonPress(1)">
@@ -177,7 +191,7 @@
             </div>
             <footer>
                 <a href="#" onclick="openModal('about')">Over Woordhex</a>
-                <span class="footer-span" id="footer-woordhex-nummer">#</span>
+                <a href="#" id="footer-woordhex-nummer" onclick="openModal('puzzle-menu')">#</a>
                 <span class="footer-span" id="footer-version">v</span>
             </footer>
         </div>
