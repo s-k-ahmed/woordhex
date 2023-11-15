@@ -143,7 +143,7 @@ body {
         justify-content: center;
       }   
         #invalid-guess {
-          bottom: 20px;
+          bottom: 12px;
           margin: 0px auto;
         }
 
@@ -429,5 +429,10 @@ body {
 
       footer {
         position: static;
+      }
+
+      .puzzle-block {
+        width: 80px;
+        height: 60px;
       }
 }

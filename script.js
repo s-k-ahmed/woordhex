@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.3";
+let version = "1.2.4";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -552,7 +552,7 @@ function buttonPress(l) {
     document.getElementById("letter"+l).style.background = darkbgcolor;
     setTimeout(() => {
         document.getElementById("letter"+l).style.background = bgcolor;
-    }, 200)
+    }, 100)
 };
 
 // Delete the last letter inputted
