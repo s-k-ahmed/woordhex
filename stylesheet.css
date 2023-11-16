@@ -357,32 +357,87 @@ body {
   }
 */
 
+  #puzzle-menu-cont {
+    padding: 10px;
+  }
+
     .grid-container {
       display: flex;
+      --s: 80px;  /* size  */
+      --m: 5px;    /* margin */
+      --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+      --interval: calc(1.5 * var(--s) + 3 * var(--m));
+      justify-content: center;
+      /*
+      display: flex;
+      position: relative;
+      justify-content: center;
+      --s: 90px;  
+      --m: 4px;   
+      --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+      */
     }
 
       #puzzle-grid {
+        width: 100%;
+        font-size: 0;
+        margin-bottom: 40px;
+        /*
         width: 90%;
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-end;
+        justify-content: flex-start;
         margin: auto;
+        font-size: 0; disable white space between inline block element
+        padding: 18px 18px;
+        */
+      }
+
+      #puzzle-grid::before {
+        content: "";
+        width: calc(var(--s)/2 + var(--m));
+        float: left;
+        height: 100%;
+        shape-outside: repeating-linear-gradient(#0000 0 calc(var(--f) - 3px), #000 0 var(--f));
       }
 
         .puzzle-block {
-          display: flex; 
+          width: var(--s);
+          margin: var(--m);
+          height: calc(var(--s)*1.1547); 
+          display: inline-block;
+          font-size: 36px;
+          clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+          background: rgb(240, 240, 240);
+          color: black;
+          cursor: pointer;
+          margin-bottom: calc(var(--m) - var(--s)*0.2885);
+          text-align: center;
+          line-height: calc(var(--s)*1.1547);
+          /*
+          display: inline-block; 
           justify-content: center; 
           align-items: center; 
-          width: 100px;
-          height: 80px;
+          */
+            /*
+            width: 100px;
+            height: 80px;
+            border: 2px solid grey;
+            border-radius: 10px;
+            */
+          /*
           background-color: rgb(240, 240, 240);
-          border: 2px solid grey;
-          border-radius: 10px;
           font-size: 36px;
           margin: 10px;
           cursor: pointer;
+          width: var(--s);
+          margin: var(--m);
+          height: calc(var(--s)*1.1547);
+          clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+          margin-bottom: calc(var(--m) - var(--s)*0.2885); 
+          */
         }
 
         .puzzle-block:hover {
@@ -431,8 +486,10 @@ body {
         position: static;
       }
 
+      /*
       .puzzle-block {
         width: 80px;
         height: 60px;
       }
+      */
 }

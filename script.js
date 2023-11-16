@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.4";
+let version = "1.2.5";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -31,7 +31,6 @@ if (typeof(Storage) == "undefined") {
 displayPM();
 printFooter();
 setUpEventListeners();
-setUpPuzzleMenu();
 // Chooses a word and central letter based on the current day
 selectPuzzle(woordhexNumber + 19619);
 updateStats();
@@ -362,15 +361,19 @@ function updateWordCountScore() {
     document.querySelector(":root").style.setProperty('--userscore', csspercent + "%");
     document.getElementById("user-circle-words").textContent = currentGuesses.length;
     document.getElementById("user-circle-score").textContent = percent;
-    if (percent > 95 && percent < 100) {
-        document.getElementById("user-circle-words-cont").style.left = "-10px";
-        document.getElementById("user-circle-score-cont").style.left = "-10px";
-        document.getElementById("heks-circle-words-cont").style.left = "10px";
-        document.getElementById("heks-circle-score-cont").style.left = "10px";
+    if (percent >= 93 && percent < 100) {
+        //document.getElementById("user-circle-words-cont").style.left = "-10px";
+        //document.getElementById("user-circle-score-cont").style.left = "-10px";
+        document.getElementById("heks-circle-words-cont").style.left = "15px";
+        document.getElementById("heks-circle-score-cont").style.left = "15px";
+    }
+    if (percent >= 97 && percent < 100) {
+        document.getElementById("user-circle-words-cont").style.left = "-5px";
+        document.getElementById("user-circle-score-cont").style.left = "-5px";
     }
     if (percent >= 100 && percent < 107) {
-        document.getElementById("user-circle-words-cont").style.left = "15px";
-        document.getElementById("user-circle-score-cont").style.left = "15px";
+        document.getElementById("user-circle-words-cont").style.left = "5px";
+        document.getElementById("user-circle-score-cont").style.left = "5px";
         document.getElementById("heks-circle-words-cont").style.left = "-15px";
         document.getElementById("heks-circle-score-cont").style.left = "-15px";
     }
@@ -476,7 +479,8 @@ function openModal(id) {
         return;
     }
     let modal = document.getElementById(id);
-    modal.style.display = "flex";
+    modal.style.display = "block";
+    setUpPuzzleMenu();
 }
 
 function closeModal(id) {
@@ -519,6 +523,7 @@ function setUpEventListeners() {
 }
 
 function setUpPuzzleMenu() {
+    let puzzleGrid = document.getElementById("puzzle-grid");
     for (let i = todayWoordhexNumber; i > 0; i--) {
         let puzzleBlock = document.createElement("div");
         puzzleBlock.classList.add("puzzle-block");
@@ -527,9 +532,21 @@ function setUpPuzzleMenu() {
             location.replace(location.origin + location.pathname + "#" + i);
             location.reload();
         }
-        let puzzleGrid = document.getElementById("puzzle-grid");
         puzzleGrid.append(puzzleBlock);
     }
+    resizePuzzleGridWidth();
+}
+
+function resizePuzzleGridWidth() {
+    let puzzleGridWidth = document.getElementById("puzzle-grid").clientWidth;
+    let puzzleBlockS = getComputedStyle(document.getElementById("grid-container")).getPropertyValue("--s");
+    puzzleBlockS = parseInt(puzzleBlockS.slice(0, -2));
+    let puzzleBlockM = getComputedStyle(document.getElementById("grid-container")).getPropertyValue("--m");
+    puzzleBlockM = parseInt(puzzleBlockM.slice(0, -2));
+    let twoHexUnitWidth = 1.5 * puzzleBlockS + 3 * puzzleBlockM;
+    let oneHexUnitWidth = puzzleBlockS + 2 * puzzleBlockM;
+    let newGridWidth = Math.floor((puzzleGridWidth - twoHexUnitWidth) / oneHexUnitWidth) * oneHexUnitWidth + twoHexUnitWidth;
+    document.getElementById("puzzle-grid").style.width = newGridWidth + "px";
 }
 
 // Selects the word input box if the screen is presented horizontally
