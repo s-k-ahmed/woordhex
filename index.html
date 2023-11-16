@@ -12,6 +12,7 @@
 <body>
 
     <div class="modal" id="about">
+        <div class="modal-outside" onclick="closeModal('about')"></div>
         <div class="modal-content" id="about-content">
             <span class="close" onclick="closeModal('about')">&times;</span>
             <h2>Over Woordhex</h2>
@@ -51,7 +52,8 @@
     </div>
     -->
 
-    <div class="modal" id="stats">
+    <div class="modal small-modal" id="stats">
+        <div class="modal-outside" onclick="closeModal('stats')"></div>
         <div class="modal-content" id="stats-content">
             <span class="close" onclick="closeModal('stats')">&times;</span>
             <h1>Statistieken</h1>
@@ -95,16 +97,18 @@
         </div>
     </div>
 
-    <div class="modal" id="show-answers-confirm">
-        <div class="modal-content" id="show-answers-confirm-content">
-            <span class="close" onclick="closeModal('show-answers-confirm')">&times;</span>
+    <div class="modal small-modal" id="ans-confirm">
+        <div class="modal-outside" onclick="closeModal('ans-confirm')"></div>
+        <div class="modal-content" id="ans-confirm-content">
+            <span class="close" onclick="closeModal('ans-confirm')">&times;</span>
             <h2>Wil je zeker de antwoorden zien?</h2>
             <p>Daarna kun je geen woorden meer raden.</p>
-            <button class="buttons" id="show-answers-confirm-btn" onclick="toggleAnswers()">Antwoorden tonen</button>
+            <button class="buttons" id="ans-confirm-btn" onclick="toggleAnswers()">Antwoorden tonen</button>
         </div>
     </div>
 
     <div class="modal" id="puzzle-menu">
+        <div class="modal-outside" onclick="closeModal('puzzle-menu')"></div>
         <div class="modal-content" id="puzzle-menu-cont">
             <span class="close" onclick="closeModal('puzzle-menu')">&times;</span>
             <h1>Woordhex Puzzelmenu</h1>
@@ -158,24 +162,26 @@
             <div class="slider-container">
                 <div class="slider-range">
                     <div class="slider-progress"></div>
-                    <div class="slider-circle" id="user-circle">
-                        <div class="slider-circle-text slider-circle-words" id="user-circle-words-cont">
-                            <span class="slider-circle-text-span" id="user-circle-words"></span>
+                    <div class="slider-node" id="user-node">
+                        <div class="slider-num slider-num-words" id="user-num-words-cont">
+                            <span class="slider-num-span" id="user-num-words"></span>
                         </div>
-                        <div class="slider-circle-text slider-circle-score" id="user-circle-score-cont">
-                            <span class="slider-circle-text-span" id="user-circle-score"></span>
+                        <div class="slider-hex" id="user-hex"></div>
+                        <div class="slider-num slider-num-score" id="user-num-score-cont">
+                            <span class="slider-num-span" id="user-num-score"></span>
                         </div>
                     </div>
                     <div class="slider-label-cont">
-                        <div class="slider-label" id="slider-words-label">W O O R D E N</div>
-                        <div class="slider-label" id="slider-score-label">S C O R E</div>
+                        <div class="slider-label" id="slider-label-words">W O O R D E N</div>
+                        <div class="slider-label" id="slider-label-score">S C O R E</div>
                     </div>
-                    <div class="slider-circle" id="woordheks-circle">
-                        <div class="slider-circle-text slider-circle-words" id="heks-circle-words-cont">
-                            <span class="slider-circle-text-span" id="heks-circle-words"></span>
+                    <div class="slider-node" id="heks-node">
+                        <div class="slider-num slider-num-words" id="heks-num-words-cont">
+                            <span class="slider-num-span" id="heks-num-words"></span>
                         </div>
-                        <div class="slider-circle-text slider-circle-score" id="heks-circle-score-cont">
-                            <span class="slider-circle-text-span" id="heks-circle-score">100</span>
+                        <div class="slider-hex" id="heks-hex"></div>
+                        <div class="slider-num slider-num-score" id="heks-num-score-cont">
+                            <span class="slider-num-span" id="heks-num-score">100</span>
                         </div>
                     </div>
                 </div>
@@ -184,7 +190,7 @@
             <button class="buttons" id="open-stats" onclick="openModal('stats')">Statistieken bekijken</button>
             <p id="guesses"></p>
             <div id="pmdiv">
-                <button class="buttons" id="show-answers" onclick="openModal('show-answers-confirm')">Antwoorden tonen</button>
+                <button class="buttons" id="show-answers" onclick="openModal('ans-confirm')">Antwoorden tonen</button>
                 <button class="buttons" id="share" onclick="shareResult()">Score delen</button>
                 <div id="result-shared"></div>
                 <p id="antwoorden"></p>

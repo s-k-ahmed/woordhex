@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.5";
+let version = "1.2.6";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -97,7 +97,7 @@ function selectPuzzle(d) {
     printGuesses();         // Needs to be after findSols() -- in selectWord() -- so it can print the %age properly
     updateWordCountScore();
     printText("antwoord-tel", "Kun je de score van de woordheks evenaren?");
-    document.getElementById("heks-circle-words").append(ANTWOORDEN.length);
+    document.getElementById("heks-num-words").append(ANTWOORDEN.length);
 
     // Swaps the central letter index to the front so it can be avoided during shuffling
     [shuffle[0], shuffle[CENTRAALINDEX]] = [shuffle[CENTRAALINDEX], shuffle[0]]
@@ -359,23 +359,23 @@ function updateWordCountScore() {
         csspercent = 111;
     }
     document.querySelector(":root").style.setProperty('--userscore', csspercent + "%");
-    document.getElementById("user-circle-words").textContent = currentGuesses.length;
-    document.getElementById("user-circle-score").textContent = percent;
+    document.getElementById("user-num-words").textContent = currentGuesses.length;
+    document.getElementById("user-num-score").textContent = percent;
     if (percent >= 93 && percent < 100) {
-        //document.getElementById("user-circle-words-cont").style.left = "-10px";
-        //document.getElementById("user-circle-score-cont").style.left = "-10px";
-        document.getElementById("heks-circle-words-cont").style.left = "15px";
-        document.getElementById("heks-circle-score-cont").style.left = "15px";
+        //document.getElementById("user-num-words-cont").style.left = "-10px";
+        //document.getElementById("user-num-score-cont").style.left = "-10px";
+        document.getElementById("heks-num-words-cont").style.left = "15px";
+        document.getElementById("heks-num-score-cont").style.left = "15px";
     }
     if (percent >= 97 && percent < 100) {
-        document.getElementById("user-circle-words-cont").style.left = "-5px";
-        document.getElementById("user-circle-score-cont").style.left = "-5px";
+        document.getElementById("user-num-words-cont").style.left = "-5px";
+        document.getElementById("user-num-score-cont").style.left = "-5px";
     }
     if (percent >= 100 && percent < 107) {
-        document.getElementById("user-circle-words-cont").style.left = "5px";
-        document.getElementById("user-circle-score-cont").style.left = "5px";
-        document.getElementById("heks-circle-words-cont").style.left = "-15px";
-        document.getElementById("heks-circle-score-cont").style.left = "-15px";
+        document.getElementById("user-num-words-cont").style.left = "5px";
+        document.getElementById("user-num-score-cont").style.left = "5px";
+        document.getElementById("heks-num-words-cont").style.left = "-15px";
+        document.getElementById("heks-num-score-cont").style.left = "-15px";
     }
 }
 
@@ -401,7 +401,7 @@ function updateStats() {
 // HTML DISPLAY ELEMENTS
 
 function displayPM() {
-    if (date.getHours() > 17) {
+    if (date.getHours() > 17 || isHashPuzzle) {
         document.getElementById("pmdiv").style.display = "inline";
     }
 }
@@ -415,7 +415,7 @@ function toggleGuessSort() {
 
 // Toggles the printing of the list of possible answers
 function toggleAnswers() {
-    closeModal("show-answers-confirm");
+    closeModal("ans-confirm");
     printText("antwoorden", "");        // Clears answer HTML paragraph
     // If answers were already showing, then escapes
     if (answersShown) {
@@ -474,12 +474,12 @@ function shareResult() {
 // MODALS
 
 function openModal(id) {
-    if (id == "show-answers-confirm" && (answersSeen || isHashPuzzle)) {
+    if (id == "ans-confirm" && (answersSeen || isHashPuzzle)) {
         toggleAnswers();
         return;
     }
     let modal = document.getElementById(id);
-    modal.style.display = "block";
+    modal.style.display = "flex";
     setUpPuzzleMenu();
 }
 
@@ -524,6 +524,9 @@ function setUpEventListeners() {
 
 function setUpPuzzleMenu() {
     let puzzleGrid = document.getElementById("puzzle-grid");
+    while (puzzleGrid.firstChild) {
+        puzzleGrid.removeChild(puzzleGrid.firstChild);
+    }
     for (let i = todayWoordhexNumber; i > 0; i--) {
         let puzzleBlock = document.createElement("div");
         puzzleBlock.classList.add("puzzle-block");
