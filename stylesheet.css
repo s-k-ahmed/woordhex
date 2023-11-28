@@ -200,11 +200,13 @@ body {
           }
 
           #user-node {
+            z-index: 2;
             color: grey;
             left: calc(var(--usersliderleft) - 7.5px);
           }
 
           #heks-node {
+            z-index: 1;
             color: purple;
             left: calc(var(--hekssliderleft) - 7.5px);
           }
@@ -467,6 +469,14 @@ body {
 
         .puzzle-block:hover {
           background-color: gainsboro;
+        }
+
+        #puzzle-block-today {
+          background-color: rgb(180, 180, 180);
+        }
+
+        #puzzle-block-today:hover {
+          background-color: rgb(150, 150, 150);
         }
 
 .number {

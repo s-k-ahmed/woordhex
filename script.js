@@ -22,7 +22,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "1.2.6";
+let version = "1.2.7";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -50,7 +50,7 @@ function savetoStorage() {
 }
 
 // Retrieves today's guesses from local storage
-function getfromStorage(d) {
+function getfromStorage() {
     let jsonDate = localStorage.getItem("date");
     let jsonGuesses = localStorage.getItem("guesses");
     let jsonScoreHistory = localStorage.getItem("score-hist");
@@ -83,8 +83,14 @@ function getfromStorage(d) {
         return;
     }
     // If the day has changed since the last session...
-        // localStorage.removeItem("answers");                  // Removes the cached answers to the previous puzzle
-        //openModal("newday");
+    newDay(jsonTodayScore, jsonScoreHistory);
+}
+
+// Makes relevant changes for a new day
+// Takes json variables as inputs to avoid defining them globally
+// * scoreHistory: sets cookie
+// * answersSeen: set to false
+function newDay(jsonTodayScore, jsonScoreHistory) {
     scoreHistory.push(JSON.parse(jsonTodayScore));          // Adds the previous day's score to scoreHistory,
     jsonScoreHistory = JSON.stringify(scoreHistory);        // ... then ...
     localStorage.setItem("score-hist", jsonScoreHistory);   // Saves it in local storage
@@ -92,7 +98,7 @@ function getfromStorage(d) {
 }
 
 function selectPuzzle(d) {
-    getfromStorage(d);
+    getfromStorage();
     selectWord(d);
     printGuesses();         // Needs to be after findSols() -- in selectWord() -- so it can print the %age properly
     updateWordCountScore();
@@ -247,6 +253,7 @@ function calculatePercentage(g, a) {
 
 function commentPercent(x) {
     let commentMessage = (
+        x == 0 ? "Veel succes!" :
         x < 10 ? "Blijf doorgaan!" :
         x < 20 ? "Goed" :
         x < 40 ? "Prima" :
@@ -391,10 +398,10 @@ function updateStats() {
     let avgScore = nonZeroDays == 0 ? "-" : Math.round(totalScore / nonZeroDays);
     printText("averagescore-num", avgScore);
 
-    let winCount = scoreAll.reduce((total, current) => current > 100 ? total + 1 : total, 0);
+    let winCount = scoreAll.reduce((total, current) => current >= 100 ? total + 1 : total, 0);
     printText("wincount-num", winCount);
 
-    let greatCount = scoreAll.reduce((total, current) => current > 50 ? total + 1 : total, 0);
+    let greatCount = scoreAll.reduce((total, current) => current >= 50 ? total + 1 : total, 0);
     printText("greatcount-num", greatCount);
 }
 
@@ -532,11 +539,13 @@ function setUpPuzzleMenu() {
         puzzleBlock.classList.add("puzzle-block");
         puzzleBlock.append(i);
         puzzleBlock.onclick = () => {
-            location.replace(location.origin + location.pathname + "#" + i);
+            let hashExtension = (i == todayWoordhexNumber) ? "" : "#" + i;
+            location.replace(location.origin + location.pathname + hashExtension);
             location.reload();
         }
         puzzleGrid.append(puzzleBlock);
     }
+    puzzleGrid.firstChild.id = "puzzle-block-today";
     resizePuzzleGridWidth();
 }
 
