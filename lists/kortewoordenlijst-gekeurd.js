@@ -7,7 +7,7 @@
     See wordfreq attribution notice at licenses/NOTICE-wordfreq.md
 */
 
-const BASISWOORDEN = [
+const WOORDEN3 = [
 	'ferry',
 	'eredienst',
 	'volger',

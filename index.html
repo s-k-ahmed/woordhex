@@ -7,9 +7,54 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap">
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="stylesheet-mobile.css">
+    <link rel="stylesheet" href="stylesheet-landscape.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
+    <div class="modal small-modal level-modal" id="v2-intro">
+        <div class="modal-outside" onclick="closeModal('v2-intro')"></div>
+        <div class="modal-content" id="v2-intro-content">
+            <span class="close" onclick="closeModal('v2-intro')">&times;</span>
+            <h2>Welkom bij Woordhex v2!</h2>
+            <p>Na een lange reis, sta je eindelijk op de trappen van het <b>woordfort</b> 🏰, waar de krachtige <span class="heks3-tekst">woordheks</span> 🧙‍♀️ woont. Als je het tegen haar wilt opnemen, dan zul je eerst haar volgelingen moeten verslaan.</p>
+            <p>Je eerste tegenstander is de <span class="heks1-tekst">woordwacht</span> 💂‍♂️. Daarna neem je het op tegen de <span class="heks2-tekst">woordleerling</span> 🧙‍♂️. Uiteindelijk sta je oog in oog met de <span class="heks3-tekst">woordheks</span> 🧙‍♀️.</p>
+            <p>Elk van je tegenstanders heeft een woordenschat van de meest gebruikte woorden in het Nederlands. De <span class="heks1-tekst">woordwacht</span> kent er rond 5.000, de <span class="heks2-tekst">woordleerling</span> rond 10.000, en de <span class="heks3-tekst">woordheks</span> rond 20.000 woorden. Je kan ze verslaan door hun scores te overtreffen.</p>
+            <p class="note-for-v1">Als je al Woordheks hebt gespeeld, dan valt het je misschien op dat de <span class="heks3-tekst">woordheks</span> vanaf nu een score van 1.000 heeft, in plaats van 100. Je statistieken van eerdere puzzels zijn al automatisch bijgewerkt.</p>
+        </div>
+    </div>
+
+    <div class="modal small-modal level-modal" id="level1-intro">
+        <div class="modal-outside" onclick="closeModal('level1-intro')"></div>
+        <div class="modal-content" id="v2-intro-content">
+            <span class="close" onclick="closeModal('level1-intro')">&times;</span>
+            <h2><span class="heks1-tekst">De woordwacht</span></h2>
+            <p>Je eerste tegenstander is de <span class="heks1-tekst">woordwacht</span> 💂‍♂️</p>
+            <p>Score: <span id="heks1-speech-score"></span></p>
+            <p>Woorden: <span id="heks1-speech-words"></span></p>
+        </div>
+    </div>
+    <div class="modal small-modal level-modal" id="level2-intro">
+        <div class="modal-outside" onclick="closeModal('level2-intro')"></div>
+        <div class="modal-content" id="v2-intro-content">
+            <span class="close" onclick="closeModal('level2-intro')">&times;</span>
+            <h2><span class="heks2-tekst">De woordleerling</span></h2>
+            <p>Je tweede tegenstander is de <span class="heks2-tekst">woordleerling</span> 🧙‍♂️</p>
+            <p>Score: <span id="heks2-speech-score"></span></p>
+            <p>Woorden: <span id="heks2-speech-words"></span></p>
+        </div>
+    </div>
+    <div class="modal small-modal level-modal" id="level3-intro">
+        <div class="modal-outside" onclick="closeModal('level3-intro')"></div>
+        <div class="modal-content" id="v2-intro-content">
+            <span class="close" onclick="closeModal('level3-intro')">&times;</span>
+            <h2><span class="heks3-tekst">De woordheks</span></h2>
+            <p>Je laatste tegenstander is de <span class="heks3-tekst">woordheks</span> 🧙‍♂️</p>
+            <p>Score: <span id="heks3-speech-score"></span></p>
+            <p>Woorden: <span id="heks3-speech-words"></span></p>
+        </div>
+    </div>
 
     <div class="modal" id="about">
         <div class="modal-outside" onclick="closeModal('about')"></div>
@@ -25,8 +70,8 @@
                 <li>De woordenlijst bevat geen namen van mensen of plaatsen; bovendien staan er weinig werkwoordvormen in.</li>
             </ul> 
             <p> Het doeleinde van de puzzel is om zoveel mogelijk woorden te vinden. In elke puzzel is er ook ten minste één woord met alle 7 letters (daarvoor krijg je bonuspunten).</p>
-            <p>Jouw tegenstander is de <b>woordheks</b>. Zij is niet vies van valsspelen: ze gebruikt een woordenlijst met meer dan 20.000 van de meest gebruikte Nederlandse woorden om haar antwoorden te vinden. Als je goed raadt, kun je haar score (die altijd 100 is) misschien evenaren, of zelfs overtreffen. Na 18:00 uur kun je haar antwoorden zien, maar daarna kun je geen woorden meer raden voor de puzzel van die dag.</p>
-            <p>Geniet ervan!</p>
+            <p>Jouw tegenstander is de <span class="heks3-tekst">woordheks</span> en haar volgelingen. Zij is niet vies van valsspelen: ze gebruikt een woordenlijst met meer dan 20.000 van de meest gebruikte Nederlandse woorden om haar antwoorden te vinden. (Haar volgelingen gebruiken lijsten van 5.000 en 10.000 woorden). Als je goed raadt, kun je haar score (die altijd 1.000 is) misschien evenaren, of zelfs overtreffen. Na 18:00 uur kun je hun antwoorden zien, maar daarna kun je geen woorden meer raden voor de puzzel van die dag.</p>
+            <p>Veel plezier!</p>
             <hr>
             <p><b>Woordhex</b> is a Dutch language word puzzle inspired by the New York Times's Spelling Bee. I made it as a gift to my boyfriend after we'd spent so much time playing the Spelling Bee together.</p>
             <p>In the puzzle, you are presented with 7 letters which you can use to make words.</p>
@@ -37,8 +82,8 @@
                 <li>The wordlist does not include names of people or places. It also does not include many verbal inflections.</li>
             </ul> 
             <p>The object of the puzzle is to find as many words as possible. Every puzzle also has at least one word with all 7 letters in it (which you get extra points for finding).</p>
-            <p>Your opponent is the <b>woordheks</b> (<i>word witch</i>). She's a bit of a cheat: she uses a list of over 20,000 commonly used Dutch words to find her answers. With some good guessing, you might be able to match, or even surpass, her score (which is always 100). You won't be able to see her answers until 18:00 each day, and once you do, you won't be able to submit any more guesses for that puzzle.</p>
-            <p>Geniet ervan!</p>
+            <p>Your opponent is the <span class="heks3-tekst">woordheks</span> (<i>word witch</i>) and her minions. She's a bit of a cheat: she uses a list of over 20,000 commonly used Dutch words to find her answers. (And her minions have lists of 5,000 and 10,000 words.) With some good guessing, you might be able to match, or even surpass, her score (which is always 1,000). You won't be able to see their answers until 18:00 each day, and once you do, you won't be able to submit any more guesses for that puzzle.</p>
+            <p>Veel plezier!</p>
         </div>
     </div>
 
@@ -51,6 +96,26 @@
         </div>
     </div>
     -->
+
+    <div class="modal small-modal" id="words">
+        <div class="modal-outside" onclick="closeModal('words')"></div>
+        <div class="modal-content" id="words-content">
+            <span class="close" onclick="closeModal('words')">&times;</span>
+            <p class="modal-wordcount"><span id="user-modal-wordcount"></span> woorden • <span class="modal-share-result" id="modal-share-result" onclick="shareResult()">Score delen</span></p>
+            <div class="modal-inner-content">
+                <p class="guesslist guesslist-modal" id="guesses-modal"></p>
+                <p class="guesslist guesslist-modal" id="heks1-words-modal"></p>
+                <p class="guesslist guesslist-modal" id="heks2-words-modal"></p>
+                <p class="guesslist guesslist-modal" id="heks3-words-modal"></p>
+                <div class="button-bar modal-button-bar">
+                    <div class="modal-button" id="modal-sort-guesses" onclick="toggleGuessSort()">Van jou<br>(tijd)</div>
+                    <div class="modal-button modal-button-heks" id="modal-button-heks1">Wacht</div>
+                    <div class="modal-button modal-button-heks" id="modal-button-heks2">Leerling</div>
+                    <div class="modal-button modal-button-heks" id="modal-button-heks3">Heks</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal small-modal" id="stats">
         <div class="modal-outside" onclick="closeModal('stats')"></div>
@@ -74,20 +139,44 @@
                         <p>Gemiddelde score</p>
                     </div>
                 </div>
+                <div class="stats-block" id="amazingcount-block">
+                    <div class="stats-num">
+                        <p id="amazingcount-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Aantal "Fantastisch" (500+)</p>
+                    </div>
+                </div>
+                <div class="stats-block" id="geniuscount-block">
+                    <div class="stats-num">
+                        <p id="geniuscount-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Aantal "Uitstekend" (700+)</p>
+                    </div>
+                </div>
+                <div class="stats-block" id="level1-block">
+                    <div class="stats-num">
+                        <p id="level1-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Overwinningen vs. <span class="heks1-tekst">woordwacht</span></p>
+                    </div>
+                </div>
+                <div class="stats-block" id="level2-block">
+                    <div class="stats-num">
+                        <p id="level2-num"></p>
+                    </div>
+                    <div class="stats-btmtext">
+                        <p>Overwinningen vs. <span class="heks2-tekst">woordleerling</span></p>
+                    </div>
+                </div>
                 <div class="stats-block" id="wincount-block">
                     <div class="stats-num">
                         <p id="wincount-num"></p>
                     </div>
                     <div class="stats-btmtext">
-                        <p>Overwinningen (100+)</p>
-                    </div>
-                </div>
-                <div class="stats-block" id="greatcount-block">
-                    <div class="stats-num">
-                        <p id="greatcount-num"></p>
-                    </div>
-                    <div class="stats-btmtext">
-                        <p>Aantal "Fantastisch" (50+)</p>
+                        <p>Overwinningen vs. <span class="heks3-tekst">woordheks</span> (1000+)</p>
                     </div>
                 </div>
             </div>
@@ -103,7 +192,7 @@
             <span class="close" onclick="closeModal('ans-confirm')">&times;</span>
             <h2>Weet je het zeker?</h2>
             <p>Nadat je de antwoorden hebt gezien, kun je geen woorden meer raden.</p>
-            <button class="buttons" id="ans-confirm-btn" onclick="toggleAnswers()">Antwoorden tonen</button>
+            <button class="buttons" id="ans-confirm-btn" onclick="openAnsConfirm(1)">Antwoorden tonen</button>
         </div>
     </div>
 
@@ -120,10 +209,65 @@
     </div>
 
     <div class="container">
-        <div class="inputs">
-            <div class="titles">
-                <h1>WOORDHEX</h1>
+        <div class="header-cont">
+            <div class="header-bar">
+                <div class="title-block">
+                    <div class="title">WOORDHEX <span id=header-version>v<span id="footer-version-mobile"></span></span></div>
+                    <div class="subtitle">De zoektocht naar de woordenschat</div>
+                </div>
+                <div class="header-button-cont">
+                    <div class="header-button" onclick="openModal('puzzle-menu')">#<span id="header-woordhex-nummer-mobile"></span></div>
+                </div>
             </div>
+        </div>
+        <div class="slider-container" id="slider-container">
+            <p id="score-comment"></p>
+            <div id="level-up-popup">Level up!</div>
+            <div class="slider-range">
+                <div class="slider-progress"></div>
+                <div class="slider-node user-node" id="user-node">
+                    <div class="slider-num slider-num-words" id="user-num-words-cont">
+                        <span class="slider-num-span user-num-words" id="user-num-words"></span>
+                    </div>
+                    <div class="slider-hex user-hex" id="user-hex">🏇</div>
+                    <div class="slider-num slider-num-score user-num-score-cont" id="user-num-score-cont">
+                        <span class="slider-num-span user-num-score" id="user-num-score"></span>
+                    </div>
+                </div>
+                <div class="slider-label-cont">
+                    <div class="slider-label slider-label-score" id="slider-label-score">S C O R E</div>
+                    <div class="slider-label slider-label-words" id="slider-label-words">W O O R D E N</div>
+                </div>
+                <div class="slider-node heks-node" id="heks-node-1">
+                    <div class="slider-num slider-num-words heks-num-words-cont" id="heks-num-words-cont-1">
+                        <span class="slider-num-span heks-num-words" id="heks-num-words-1"></span>
+                    </div>
+                    <div class="slider-hex heks-hex" id="heks-hex-1">💂‍♂️</div>
+                    <div class="slider-num slider-num-score heks-num-score-cont" id="heks-num-score-cont-1">
+                        <span class="slider-num-span heks-num-score" id="heks-num-score-1"></span>
+                    </div>
+                </div>
+                <div class="slider-node heks-node" id="heks-node-2">
+                    <div class="slider-num slider-num-words heks-num-words-cont" id="heks-num-words-cont-2">
+                        <span class="slider-num-span heks-num-words" id="heks-num-words-2"></span>
+                    </div>
+                    <div class="slider-hex heks-hex" id="heks-hex-2">🧙</div>
+                    <div class="slider-num slider-num-score heks-num-score-cont" id="heks-num-score-cont-2">
+                        <span class="slider-num-span heks-num-score" id="heks-num-score-2"></span>
+                    </div>
+                </div>
+                <div class="slider-node heks-node" id="heks-node-3">
+                    <div class="slider-num slider-num-words heks-num-words-cont" id="heks-num-words-cont-3">
+                        <span class="slider-num-span heks-num-words" id="heks-num-words-3"></span>
+                    </div>
+                    <div class="slider-hex heks-hex" id="heks-hex-3">🧙‍♀️</div>
+                    <div class="slider-num slider-num-score heks-num-score-cont" id="heks-num-score-cont-3">
+                        <span class="slider-num-span heks-num-score" id="heks-num-score-3"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inputs">
             <div class="inputbox">
                 <div id="woord-input" onclick="focusInput()" tabindex="0" contenteditable="true"></div>
                 <div id="invalid-guess"></div>
@@ -158,50 +302,31 @@
             <!--
             <p id="wordcount"></p>
             -->
-            <p id="score-comment"></p>
-            <div class="slider-container">
-                <div class="slider-range">
-                    <div class="slider-progress"></div>
-                    <div class="slider-node" id="user-node">
-                        <div class="slider-num slider-num-words" id="user-num-words-cont">
-                            <span class="slider-num-span" id="user-num-words"></span>
-                        </div>
-                        <div class="slider-hex" id="user-hex"></div>
-                        <div class="slider-num slider-num-score" id="user-num-score-cont">
-                            <span class="slider-num-span" id="user-num-score"></span>
-                        </div>
-                    </div>
-                    <div class="slider-label-cont">
-                        <div class="slider-label" id="slider-label-words">W O O R D E N</div>
-                        <div class="slider-label" id="slider-label-score">S C O R E</div>
-                    </div>
-                    <div class="slider-node" id="heks-node">
-                        <div class="slider-num slider-num-words" id="heks-num-words-cont">
-                            <span class="slider-num-span" id="heks-num-words"></span>
-                        </div>
-                        <div class="slider-hex" id="heks-hex"></div>
-                        <div class="slider-num slider-num-score" id="heks-num-score-cont">
-                            <span class="slider-num-span" id="heks-num-score">100</span>
-                        </div>
-                    </div>
+            <div id="output-non-slider">
+                <button class="buttons" id="sort-guesses" onclick="toggleGuessSort()">Sorteren: tijd</button>
+                <button class="buttons" id="open-stats" onclick="openModal('stats')">Statistieken bekijken</button>
+                <p class="guesslist" id="guesses"></p>
+                <div id="pmdiv">
+                    <button class="buttons" id="show-answers" onclick="openAnsConfirm(1)">Antwoorden tonen</button>
+                    <button class="buttons" id="share" onclick="shareResult()">Score delen</button>
+                    <div id="result-shared"></div>
+                    <p class="guesslist" id="antwoorden"></p>
                 </div>
-            </div>
-            <button class="buttons" id="sort-guesses" onclick="toggleGuessSort()">Sorteren: tijd</button>
-            <button class="buttons" id="open-stats" onclick="openModal('stats')">Statistieken bekijken</button>
-            <p id="guesses"></p>
-            <div id="pmdiv">
-                <button class="buttons" id="show-answers" onclick="openModal('ans-confirm')">Antwoorden tonen</button>
-                <button class="buttons" id="share" onclick="shareResult()">Score delen</button>
-                <div id="result-shared"></div>
-                <p id="antwoorden"></p>
             </div>
             <footer>
                 <a href="#" onclick="openModal('about')">Over Woordhex</a>
                 <a href="#" id="footer-woordhex-nummer" onclick="openModal('puzzle-menu')">#</a>
                 <span class="footer-span" id="footer-version">v</span>
             </footer>
+            <div class="button-bar" id="footer-button-bar">
+                <div class="footer-button" onclick="openModal('words')">Woorden</div>
+                <div class="footer-button" onclick="openModal('stats')">Statistiek</div>
+                <div class="footer-button" onclick="openModal('about')">Wat is dit?</div>
+            </div>
         </div>
-
+       
+        <script type="text/javascript" src="lists/heks1-lijst.js"></script>
+        <script type="text/javascript" src="lists/heks2-lijst.js"></script>
         <script type="text/javascript" src="lists/basiswoorden-gekeurd-4letters.js"></script>
         <script type="text/javascript" src="lists/kortewoordenlijst-gekeurd.js"></script>
         <script type="text/javascript" src="lists/zevenletters-kort.js"></script>

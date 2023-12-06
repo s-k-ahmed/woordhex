@@ -1,0 +1,29 @@
+@media (min-width: 900px) {
+    .container {
+        min-height: auto;
+        margin-top: 20vh;
+    }
+
+    .header-cont {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: white;
+    }
+
+    .slider-container {
+        position: fixed;
+        top: 20px;
+        left: calc(50vw + 20px);
+        width: 40vw;
+    }
+
+    #modal-sort-guesses {
+        display: none;
+    }
+
+    #antwoorden {
+        display: none;
+    }
+
+}
