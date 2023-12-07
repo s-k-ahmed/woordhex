@@ -613,6 +613,7 @@ body {
           margin-bottom: calc(var(--puzzle-block-margin) - var(--puzzle-block-size)*0.2885);
           text-align: center;
           line-height: calc(var(--puzzle-block-size)*1.1547);
+          user-select: none;
           /*
           display: inline-block; 
           justify-content: center; 

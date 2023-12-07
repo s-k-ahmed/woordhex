@@ -1,7 +1,5 @@
 /*
-	Wordlist generated using the Opentaal vetted wordlist and the NL frequency list from Robyn Speer's wordfreq Python package
-    This is the overlap of the top 50,000 words from the wordfreq list and those in the zevenletters.js list (a subset of Opentaal)
-    (i.e. the vetting of the Opentaal pangram list was used to "vet" the wordfreq list)
+    List of all words with 7 unique letters from the heks3 wordlist.
 	See Opentaal license at licenses/LICENSE-opentaal.txt
 	See wordfreq license at licenses/LICENSE-wordfreq.txt
     See wordfreq attribution notice at licenses/NOTICE-wordfreq.md
