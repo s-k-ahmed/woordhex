@@ -1254,7 +1254,6 @@ const WOORDEN2 = [
 	'gevangene',
 	'kijk',
 	'zich',
-	'neger',
 	'hulst',
 	'ribben',
 	'topscorer',
