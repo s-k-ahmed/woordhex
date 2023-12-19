@@ -32,7 +32,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "2.0.4";
+let version = "2.0.5";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -573,8 +573,8 @@ function updateWordCountScore() {
     let sliderWidth = document.getElementById("slider-container").clientWidth;
     let userLeft = Math.round(sliderWidth * 0.0009 * csspercent - 7.5);
     let witch1Left = Math.round(sliderWidth * 0.0009 * witch1percent - 7.5);
-    let witch2Left = (LEVEL > 0) ? Math.round(sliderWidth * 0.0009 * witch2percent - 7.5) : witch1Left;
-    let witch3Left = (LEVEL > 1) ? Math.round(sliderWidth * 0.0009 * 90 - 7.5) : witch1Left;
+    let witch2Left = (currentLevel > 0) ? Math.round(sliderWidth * 0.0009 * witch2percent - 7.5) : witch1Left;
+    let witch3Left = (currentLevel > 1) ? Math.round(sliderWidth * 0.0009 * 1000 - 7.5) : witch1Left;
 
     const maxHexGap = 35;
 
@@ -590,6 +590,7 @@ function updateWordCountScore() {
     let offsetUW1 = 0.5 * (maxHexGap - Math.abs(diffUW1));
     let offsetUW2 = 0.5 * (maxHexGap - Math.abs(diffUW2));
     let offsetUW3 = 0.5 * (maxHexGap - Math.abs(diffUW3));
+    
 
     /*
     testOutput(diffUW1);
@@ -599,26 +600,36 @@ function updateWordCountScore() {
     isClash3 ? testOutput("Clash 3!") : null;
     */
 
-    let userLeftAdjust = 
-        (isClash1 && isWitchHigher1) ? -offsetUW1 : 
-        (isClash1 && !isWitchHigher1) ? offsetUW1 :
-        (isClash2 && isWitchHigher2) ? -offsetUW2 : 
-        (isClash2 && !isWitchHigher2) ? offsetUW2 :
-        (isClash3 && isWitchHigher3) ? -offsetUW3 : 
-        (isClash3 && !isWitchHigher3) ? offsetUW3 :
-        0;
-    let witch1LeftAdjust = 
-        (isClash1 && isWitchHigher1) ? offsetUW1 :
-        (isClash1 && !isWitchHigher1) ? -offsetUW1:
-        0;
-    let witch2LeftAdjust = 
-        (isClash2 && isWitchHigher2) ? offsetUW2 :
-        (isClash2 && !isWitchHigher2) ? -offsetUW2:
-        0;
-    let witch3LeftAdjust = 
-        (isClash3 && isWitchHigher3) ? offsetUW3 :
-        (isClash3 && !isWitchHigher3) ? -offsetUW3:
-        0;
+    let userLeftAdjust = 0;
+    let witch1LeftAdjust = 0;
+    let witch2LeftAdjust = 0;
+    let witch3LeftAdjust = 0;
+
+    userLeftAdjust += (isClash1 && isWitchHigher1) ? -offsetUW1 : 0;
+    userLeftAdjust += (isClash1 && !isWitchHigher1) ? offsetUW1 : 0;
+    userLeftAdjust += (isClash2 && isWitchHigher2 && currentLevel > 0) ? -offsetUW2 : 0;
+    userLeftAdjust += (isClash2 && !isWitchHigher2 && currentLevel > 0) ? offsetUW2 : 0;
+    userLeftAdjust += (isClash3 && isWitchHigher3 && currentLevel > 1) ? -offsetUW3 : 0;
+    userLeftAdjust += (isClash3 && !isWitchHigher3 && currentLevel > 1) ? offsetUW3 : 0;
+    
+    witch1LeftAdjust += (isClash1 && isWitchHigher1) ? offsetUW1 : 0;
+    witch1LeftAdjust += (isClash1 && !isWitchHigher1) ? -offsetUW1: 0;
+    witch2LeftAdjust += (isClash2 && isWitchHigher2) ? offsetUW2 : 0;
+    witch2LeftAdjust += (isClash2 && !isWitchHigher2) ? -offsetUW2: 0;
+    witch3LeftAdjust += (isClash3 && isWitchHigher3) ? offsetUW3 : 0;
+    witch3LeftAdjust += (isClash3 && !isWitchHigher3) ? -offsetUW3: 0;
+
+    let diffWW21 = Math.abs(witch2Left + witch2LeftAdjust - witch1Left - witch1LeftAdjust);
+    let diffWW32 = Math.abs(witch3Left + witch3LeftAdjust - witch2Left - witch2LeftAdjust);
+    let isClash21 = (diffWW21 < maxHexGap);
+    let isClash32 = (diffWW32 < maxHexGap);
+    let offsetWW21 = 0.5 * (maxHexGap - Math.abs(diffWW21));
+    let offsetWW32 = 0.5 * (maxHexGap - Math.abs(diffWW32));
+    
+    witch1LeftAdjust += (isClash21 && currentLevel > 0) ? -offsetWW21 : 0;
+    witch2LeftAdjust += (isClash21 && currentLevel > 0) ? offsetWW21 : 0;
+    witch2LeftAdjust += (isClash32 && currentLevel > 1) ? -offsetWW32 : 0;
+    witch3LeftAdjust += (isClash32 && currentLevel > 1) ? offsetWW32 : 0;
 
     document.getElementById("user-num-words-cont").style.left = userLeftAdjust + "px";
     document.getElementById("user-num-score-cont").style.left = userLeftAdjust + "px";
