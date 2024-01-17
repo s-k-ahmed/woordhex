@@ -14,6 +14,7 @@ document.getElementById("local-storage").innerText =
     "score-hist-v2: " + jsonScoreHistoryv2 + "\n" + 
     "level-hist: " + jsonLevelHistory + "\n" +
     "todayScore: " + jsonTodayScore + "\n" +
+    "todayLevel: " + jsonTodayLevel + "\n" +
     "answersSeen: " + jsonAnswersSeen;
 
 function copyText(id) {

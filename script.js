@@ -32,7 +32,7 @@ let answersSeen = false;
 let isSortAZ = false;
 let minWordCount = 20;
 let maxWordCount = 80;
-let version = "2.0.5";
+let version = "2.0.6";
 
 if (typeof(Storage) == "undefined") {
     alert("Sorry, je browser ondersteunt lokale webopslag niet, dus er worden tussen sessies geen gegevens opgeslagen.")
@@ -548,7 +548,7 @@ function updateWordCountScore() {
         csspercent = 1111;
     }
 
-
+    // Adding wordcounts/scores to Level intro + witch slider hexes
     for (i = 1; i < 4; i++) {
         document.getElementById("heks" + i + "-speech-words").textContent = ANTWOORDENGROEP[i-1].length;
         document.getElementById("heks" + i + "-speech-score").textContent = calculatePercentage(ANTWOORDENGROEP[i-1], ANTWOORDEN);
@@ -559,14 +559,22 @@ function updateWordCountScore() {
 
     }
 
+    // Setting position of slider hexes
     document.querySelector(":root").style.setProperty('--usersliderleft', 0.09 * csspercent + "%");
     document.querySelector(":root").style.setProperty('--heks1sliderleft', 0.09 * witch1percent + "%");
     document.querySelector(":root").style.setProperty('--heks2sliderleft', 0.09 * witch2percent + "%");
     document.querySelector(":root").style.setProperty('--heks3sliderleft', "90%");
 
-    // Printing the word count and scores next to the hexes
+    // Printing user wordcount/scores next to user hex
     document.getElementById("user-num-words").textContent = currentGuesses.length;
     document.getElementById("user-num-score").textContent = totalPercent;
+
+    // Printing wordcounts for each witch in words modal
+    for (i = 1; i < 4; i++) {
+        let witchMatch = ANTWOORDENGROEP[i-1].filter((value) => currentGuesses.indexOf(value) != -1);
+        document.getElementById("modal-words-heks" + i + "-tally-user").textContent = witchMatch.length;
+        document.getElementById("modal-words-heks" + i + "-tally-outof").textContent = ANTWOORDENGROEP[i-1].length;
+    }
 
     // Adjusting text position during hex clashes 
     //(maxHexGap: the maximum distances two hexes have to be (in px) to cause a clash)
